@@ -5,14 +5,19 @@ using System.Threading.Tasks;
 using Unity.Services.Leaderboards;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Collections;
 
 public class LeaderboardManager : MonoBehaviour
 {
     public static LeaderboardManager Instance { get; private set; }
-    private const string leaderboardId = "SkibidiOPmanLeaderboard"; //6opmanl6eaderboard6
+    private const string leaderboardId = "StreamerOfTheUniverse"; 
 
     public event EventHandler<OnLeaderboardPulledEventargs> OnLeaderboardPulled;
     public bool ranOnce = false;
+
+    private Dictionary<string, string> metadataXQC = new Dictionary<string, string>() { { "creator", "XQC" } };
+
     public class OnLeaderboardPulledEventargs : EventArgs
     {
         public string scores;
@@ -41,6 +46,7 @@ public class LeaderboardManager : MonoBehaviour
         await SignInAnonymouslyAsync();
 
         GetScores();
+        GetPlayerScoreByMetaData();
     }
 
     private void SetupEvents()
@@ -89,14 +95,11 @@ public class LeaderboardManager : MonoBehaviour
         ranOnce = true;
     }
 
-
-
-
-    public void AddPlayerScore(string playerName, float playerTime)
+    public void AddPlayerScore(string playerName, float playerScore, string creatorName)
     {
         AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
         //await UpdatePlayerName(playerName);
-        AddScoreWithMetadata(playerTime);
+        AddScoreWithMetadata(playerScore, creatorName);
     }
     async Task UpdatePlayerName(string playerName)
     {
@@ -117,15 +120,26 @@ public class LeaderboardManager : MonoBehaviour
             Debug.LogException(ex);
         }
     }
-    public async void AddScoreWithMetadata(float playerTime)
+    public async void AddScoreWithMetadata(float playerScore, string creatorName)
     {
-
+        var metadata = new Dictionary<string, string>() { { "creator", creatorName } };
         var playerEntry = await LeaderboardsService.Instance
             .AddPlayerScoreAsync(
                 leaderboardId,
-                playerTime
-                );
+                playerScore,
+                new AddPlayerScoreOptions 
+                { Metadata = metadata });
         Debug.Log(JsonConvert.SerializeObject(playerEntry));
+    }
+
+
+    public async void GetPlayerScoreByMetaData()
+    {
+        var scoreResponse = await LeaderboardsService.Instance
+            .GetPlayerScoreAsync(
+                leaderboardId,
+                new GetPlayerScoreOptions { IncludeMetadata = true });
+        Debug.Log(JsonConvert.SerializeObject(scoreResponse));
     }
 
     [System.Serializable]
