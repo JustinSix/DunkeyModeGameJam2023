@@ -12,6 +12,7 @@ public static class Loader
         GambleGame,
         FullGuysGame,
         StreamerScene,
+        MarioKurt,
     }
 
     private static Scene targetSceneIndex;
@@ -20,8 +21,8 @@ public static class Loader
     public static void Load(Scene targetScene)
     {
         Loader.targetSceneIndex = targetScene;
-
-        SceneManager.LoadScene(Scene.LoadingScene.ToString());
+        SceneManager.LoadScene(targetScene.ToString());
+        //SceneManager.LoadScene(Scene.LoadingScene.ToString());
     }
 
 
