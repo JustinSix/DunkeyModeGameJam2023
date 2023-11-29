@@ -1,31 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 public class GamblingManager : MonoBehaviour
 {
-    [SerializeField] private Button betOneButton;
-    [SerializeField] private Button betMaxButton;
-    [SerializeField] private Button spinButton;
-    public void Start()
-    {
-        betOneButton.onClick.AddListener(() =>
-        {
+    [SerializeField] private Button betOne, betAll, spin, inc, dec;
+    [SerializeField] private GGG ggg;
 
-        });
-        betMaxButton.onClick.AddListener(() =>
-        {
-
-        });
-        spinButton.onClick.AddListener(() =>
-        {
-
-        });
+    public void Start() {
+        betOne.onClick.AddListener(() => ggg.BetOne());
+        betAll.onClick.AddListener(() => ggg.BetAll());
+        spin.onClick.AddListener(() => ggg.Spin());
+        inc.onClick.AddListener(() => ggg.Inc());
+        dec.onClick.AddListener(() => ggg.Dec());
     }
-    public void Spin()
-    {
-        //initiate spinning
-    }
-    
 }
