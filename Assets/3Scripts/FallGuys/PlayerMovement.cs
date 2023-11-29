@@ -5,162 +5,145 @@ using System;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //events 
-    public event EventHandler OnPlayerJumped;
-    [SerializeField] PlayerInput playerInput;
-    //customizeable
-    [SerializeField] private float walkSpeed = 5;
-    [SerializeField] private float runSpeed = 9;
-    [SerializeField] private float airMultiplier;
-    [SerializeField] private float groundDrag;
+    [Header("Movement")]
+    public float moveSpeed;
 
-    [Header("Running")]
-    [SerializeField] private bool canRun = true;
-    public bool IsRunning { get; private set; }
+    public float groundDrag;
 
-    private bool isMoving = false;
+    public float jumpForce;
+    public float jumpCooldown;
+    public float airMultiplier;
+    bool readyToJump;
 
-    //Slopes 
-    public float maxSlopeAngle = 45f; // maximum slope angle in degrees
-    public float slopeDistance = 2f;
-    //[SerializeField] private float slopeCheckRaycastOriginOffset = -0.1f;
+    [HideInInspector] public float walkSpeed;
+    [HideInInspector] public float sprintSpeed;
+
+    [Header("Keybinds")]
+    public KeyCode jumpKey = KeyCode.Space;
+
+    [Header("Ground Check")]
+    public float playerHeight;
+    public LayerMask whatIsGround;
+    bool grounded;
+
+    public Transform orientation;
+
+    float horizontalInput;
+    float verticalInput;
+
+    Vector3 moveDirection;
 
     Rigidbody rb;
-    /// <summary> Functions to override movement speed. Will use the last added override. </summary>
-    public List<System.Func<float>> speedOverrides = new List<System.Func<float>>();
-
-    #region Jumping Variables
-    [SerializeField] private float jumpStrength = 2;
 
 
-    [SerializeField, Tooltip("Prevents jumping when the transform is in mid-air.")]
-    GroundCheck groundCheck;
-    #endregion
-    [SerializeField] Transform playerCamera;
-    #region player hit variables
     private bool canMove = true; //If player is not hitted
     private bool isStuned = false;
     private bool wasStuned = false; //If player was stunned before get stunned another time
     private float pushForce;
     private Vector3 pushDir;
+    public float gravity = 10.0f;
 
-    #endregion
-
-    void Awake()
+    [SerializeField] private float downwardForce = 10f;
+    private void Start()
     {
-        // Get the rigidbody on this.
         rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+
+        readyToJump = true;
     }
-    void Start()
-    {
-        //register jump event 
-        playerInput.OnJumpAction += PlayerInput_OnJumpAction;
-    }
+
     private void Update()
     {
+        // ground check
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+
+        MyInput();
         SpeedControl();
-        if (groundCheck.isGrounded)
-        {
+
+        // handle drag
+        if (grounded)
             rb.drag = groundDrag;
-        }
         else
-        {
             rb.drag = 0;
+    }
+
+    private void FixedUpdate()
+    {
+        if (canMove)
+        {
+            MovePlayer();
+        }
+        if (!grounded)
+        {
+            ApplyDownwardGravity();
         }
     }
-    void FixedUpdate()
+    private void ApplyDownwardGravity()
     {
-        // Update IsRunning from input.
-        IsRunning = canRun && playerInput.IsRunning();
-        //check slope
-        if (IsSlopeTooSteep(maxSlopeAngle, slopeDistance))
-        {
-            //Debug.LogError("too steep of slope");
-
-            isMoving = false;
-        }
-        else
-        {
-            PlayerMove();
-        }
+        Debug.LogWarning("applying downward force of " + Vector3.down * gravity * downwardForce);
+        rb.AddForce(Vector3.down * gravity * downwardForce);
     }
-    private void PlayerMove()
+    private void MyInput()
     {
-        // Get targetMovingSpeed.
-        float targetMovingSpeed = IsRunning ? runSpeed : walkSpeed;
-        if (speedOverrides.Count > 0)
-        {
-            targetMovingSpeed = speedOverrides[speedOverrides.Count - 1]();
-        }
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
 
-        //player input determine movement vector
-        Vector2 movementVector = playerInput.GetMovementVectorNormalized();
-
-        //calculate exact movement direction vector
-        Vector3 moveDirection = transform.rotation * new Vector3(movementVector.x, 0, movementVector.y);
-
-
-        // Apply movement depending on if grounded or in air
-        if (groundCheck.isGrounded)
+        // when to jump
+        if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
-            rb.AddForce(moveDirection * targetMovingSpeed * 10, ForceMode.Force);
-        }
-        else
-        {
-            rb.AddForce(moveDirection * targetMovingSpeed * 10 * airMultiplier, ForceMode.Force);
-        }
+            readyToJump = false;
 
+            Jump();
 
-        if (rb.velocity.sqrMagnitude > 1)
-        {
-            isMoving = true;
-        }
-        else
-        {
-            isMoving = false;
-        }
-        Debug.Log("Move function called with, movement vector Y:" + movementVector.x + "movement vector Y:" + movementVector.y);
-    }
-    //JUMP 
-    private void PlayerInput_OnJumpAction(object sender, System.EventArgs e)
-    {
-        //Jump when the Jump button is pressed and we are on the ground.
-        //Input.GetButtonDown("Jump") && 
-        if ((!groundCheck || groundCheck.isGrounded))
-        {
-            //playerAnim.SetTrigger("jump");
-            OnPlayerJumped?.Invoke(this, EventArgs.Empty);
-            rb.AddForce(Vector3.up * 100 * jumpStrength, ForceMode.Impulse);
+            Invoke(nameof(ResetJump), jumpCooldown);
         }
     }
 
-    public bool IsSlopeTooSteep(float maxAngle, float distance)
+    private void MovePlayer()
     {
-        //Vector3 origin = transform.position + Vector3.up * slopeCheckRaycastOriginOffset; // offset to avoid hitting the ground
+        // calculate movement direction
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        //if (Physics.Raycast(origin, transform.forward, out RaycastHit hitInfo, distance))
-        //{
-        //    Debug.DrawRay(origin, transform.forward * distance, Color.red);
-        //    float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
-        //    return angle > maxAngle;
-        //}
-        return false;
+        // on ground
+        if (grounded)
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+
+        // in air
+        else if (!grounded)
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
     }
 
-    public void HitPlayer(Vector3 velocityF, float time, float force)
+    private void SpeedControl()
     {
-        float multiplyForceByHealth = 100f;
-        force *= multiplyForceByHealth;
-        velocityF *= force;
+        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
+        // limit velocity if needed
+        if (flatVel.magnitude > moveSpeed)
+        {
+            Vector3 limitedVel = flatVel.normalized * moveSpeed;
+            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+        }
+    }
+
+    private void Jump()
+    {
+        // reset y velocity
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+    private void ResetJump()
+    {
+        readyToJump = true;
+    }
+    public void HitPlayer(Vector3 velocityF, float time)
+    {
         rb.velocity = velocityF;
 
         pushForce = velocityF.magnitude;
         pushDir = Vector3.Normalize(velocityF);
         StartCoroutine(Decrease(velocityF.magnitude, time));
     }
-
-
     private IEnumerator Decrease(float value, float duration)
     {
         if (isStuned)
@@ -175,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
         {
             yield return null;
 
-            rb.AddForce(new Vector3(0, GetComponent<Rigidbody>().mass, 0)); //Add gravity
+            rb.AddForce(new Vector3(0, -gravity * GetComponent<Rigidbody>().mass, 0)); //Add gravity
         }
 
         if (wasStuned)
@@ -187,21 +170,5 @@ public class PlayerMovement : MonoBehaviour
             isStuned = false;
             canMove = true;
         }
-    }
-
-    private void SpeedControl()
-    {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        // limit velocity if needed
-        if (flatVel.magnitude > runSpeed)
-        {
-            Vector3 limitedVel = flatVel.normalized * runSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-        }
-    }
-    public bool IsMoving()
-    {
-        return isMoving;
     }
 }
