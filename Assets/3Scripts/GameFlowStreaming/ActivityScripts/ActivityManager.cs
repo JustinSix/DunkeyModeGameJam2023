@@ -7,8 +7,7 @@ public  class ActivityManager : MonoBehaviour
 {
     public static ActivityManager Instance { get; private set; }
 
-    [SerializeField] private Transform pickActivityCamera;
-    [SerializeField] private Transform activityCamera;
+    [SerializeField] private GameObject pickActivityVCameraO;
     [SerializeField] private GameObject activityCanvas;
     [SerializeField] private Activity[] activityArray;
     [SerializeField] private ActivityButton[] activityButtonArray;
@@ -18,6 +17,11 @@ public  class ActivityManager : MonoBehaviour
     [SerializeField] private GameObject vaping;
     [SerializeField] private GameObject piano;
     [SerializeField] private GameObject dance;
+    [Header("Activity Virtual Cameras to Enable")]
+    [SerializeField] private GameObject hotTubVCameraO;
+    [SerializeField] private GameObject vapingVCameraO;
+    [SerializeField] private GameObject pianoVCameraO;
+    [SerializeField] private GameObject danceVCameraO;
     public enum ActivityName
     {
         MarioKurt,
@@ -62,13 +66,13 @@ public  class ActivityManager : MonoBehaviour
 
     public void ShiftToActivities()
     {
-        pickActivityCamera.gameObject.SetActive(true);
+        pickActivityVCameraO.SetActive(true);
         activityCanvas.SetActive(true);
         AssignRandomActivities();
     }
     public void ShiftOffActivities()
     {
-        pickActivityCamera.gameObject.SetActive(false);
+        pickActivityVCameraO.SetActive(false);
     }
     private void AssignRandomActivities()
     {
