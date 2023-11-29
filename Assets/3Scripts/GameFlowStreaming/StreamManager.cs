@@ -15,4 +15,5 @@ public class StreamManager : MonoBehaviour
     {
         
     }
+    //pop in random image of chat have array of negative and positive chats, animate it in 
 }
