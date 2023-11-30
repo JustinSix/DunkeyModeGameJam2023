@@ -8,4 +8,6 @@ public class ActivityButton : MonoBehaviour
     public Button activityButton;
     public TMP_Text activityText;
     public Image activityImage;
+    public string activityTitle;
+    public ActivityManager.ActivityName activityName;
 }

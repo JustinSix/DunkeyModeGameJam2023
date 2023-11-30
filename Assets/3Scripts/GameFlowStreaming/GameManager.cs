@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     private State state;
     [SerializeField] private float countdownToStartTimer;
+    [SerializeField] private float countdownToStartTimerMax;
     [SerializeField] private float pickingActivityTimerMax;
     float pickingActivityTimer;
     protected enum State
@@ -50,6 +51,15 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
-        Debug.Log("state: " + state);
+    }
+    public void ChangeToStreaming()
+    {
+        countdownToStartTimer = countdownToStartTimerMax;
+        state = State.StreamView;
+    }
+
+    public void ChangeToPlayingActivity()
+    {
+        state = State.PlayingActivity;
     }
 }

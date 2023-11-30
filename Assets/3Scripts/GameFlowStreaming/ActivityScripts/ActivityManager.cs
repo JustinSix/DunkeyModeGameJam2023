@@ -1,11 +1,15 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public  class ActivityManager : MonoBehaviour
 {
     public static ActivityManager Instance { get; private set; }
+
+    [SerializeField] private CinemachineBrain cameraBrain;
 
     [SerializeField] private GameObject pickActivityVCameraO;
     [SerializeField] private GameObject activityCanvas;
@@ -60,6 +64,7 @@ public  class ActivityManager : MonoBehaviour
         Instance = this;      
     }
 
+    
     //shift camera to screen
     //enable ui elements of activities
     //randomly pick 3 activities and set up button/visuals for picking
@@ -67,8 +72,18 @@ public  class ActivityManager : MonoBehaviour
     public void ShiftToActivities()
     {
         pickActivityVCameraO.SetActive(true);
-        activityCanvas.SetActive(true);
+
+
         AssignRandomActivities();
+        StartCoroutine(WaitForCinemachineTransition());
+    }
+    IEnumerator WaitForCinemachineTransition()
+    {
+        while (cameraBrain.IsBlending)
+        {
+            yield return null;
+        }
+        activityCanvas.SetActive(true);
     }
     public void ShiftOffActivities()
     {
@@ -76,6 +91,10 @@ public  class ActivityManager : MonoBehaviour
     }
     private void AssignRandomActivities()
     {
+        activityButtonArray[0].activityButton.onClick.RemoveAllListeners();
+        activityButtonArray[1].activityButton.onClick.RemoveAllListeners();
+        activityButtonArray[2].activityButton.onClick.RemoveAllListeners();
+
         Activity[] allActivities = activityArray;
 
         ShuffleArray(allActivities);
@@ -90,31 +109,49 @@ public  class ActivityManager : MonoBehaviour
         {
             StartActivity(randomActivity1.activityName.ToString());
         });
+        activityButtonArray[0].activityTitle = randomActivity1.activityName.ToString();
+        activityButtonArray[0].activityName = randomActivity1.activityName;
 
         activityButtonArray[1].activityText.text = randomActivity2.activityName.ToString();
+        activityButtonArray[1].activityButton.onClick.AddListener(() =>
+        {
+            StartActivity(randomActivity2.activityName.ToString());
+        });
+        activityButtonArray[1].activityTitle = randomActivity2.activityName.ToString();
+        activityButtonArray[1].activityName = randomActivity2.activityName;
 
         activityButtonArray[2].activityText.text = randomActivity3.activityName.ToString();
+        activityButtonArray[2].activityButton.onClick.AddListener(() =>
+        {
+            StartActivity(randomActivity3.activityName.ToString());
+        });
+        activityButtonArray[2].activityTitle = randomActivity3.activityName.ToString();
+        activityButtonArray[2].activityName = randomActivity3.activityName;
     }
 
     private void StartActivity(string activityName)
     {
         Debug.Log("started activity button clicked");
+        activityCanvas.gameObject.SetActive(false);
         switch (activityName)
         {
             case "MarioKurt":
+                Debug.Log("MarioKurt");
                 Loader.Load(Loader.Scene.MarioKurt); 
                 break;
 
             case "FullGuys":
+                Debug.Log("FullGuys");
                 Loader.Load(Loader.Scene.FullGuysGame);
                 break;
 
             case "PlayPiano":
+                Debug.Log("PlayPiano");
                 StartStreamRoomActivity(piano);
                 break;
 
             case "HotTub":
-                //X
+                Debug.Log("HotTub");
                 StartStreamRoomActivity(hotTub);
                 break;
 
@@ -123,6 +160,7 @@ public  class ActivityManager : MonoBehaviour
             //    break;
 
             case "Dance":
+                Debug.Log("Dance");
                 StartStreamRoomActivity(dance);
                 break;
 
@@ -131,10 +169,12 @@ public  class ActivityManager : MonoBehaviour
             //    break;
 
             case "Vape":
+                Debug.Log("Vape");
                 StartStreamRoomActivity(vaping);
                 break;
 
             case "Gamble":
+                Debug.Log("Gamble");
                 Loader.Load(Loader.Scene.GambleGame);
                 break;
 
@@ -142,11 +182,19 @@ public  class ActivityManager : MonoBehaviour
 
                 break;
         }
-
+        GameManager.Instance.ChangeToPlayingActivity();
     }
     private void StartStreamRoomActivity(GameObject activityToEnable)
     {
         activityToEnable.SetActive(true);
+        StartCoroutine(DisableAfter(activityToEnable));
+    }
+
+    IEnumerator DisableAfter(GameObject activityToDisable)
+    {
+        yield return new WaitForSeconds(4f);
+        activityToDisable.SetActive(false);
+        GameManager.Instance.ChangeToStreaming();
     }
     private void ShuffleArray<T>(T[] array)
     {

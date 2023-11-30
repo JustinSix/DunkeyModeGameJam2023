@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c6f5b5d2b782a45ae331b5af2c8f54, type: 3}
   m_Name: Vape
   m_EditorClassIdentifier: 
-  activityName: 7
+  activityName: 5
   sceneToLoad: 0
-  streamActivity: 6
-  streamer: 4
+  streamActivity: 4
+  streamer: 0
