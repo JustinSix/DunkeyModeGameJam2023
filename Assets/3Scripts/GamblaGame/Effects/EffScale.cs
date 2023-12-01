@@ -1,47 +1,57 @@
 using UnityEngine;
 
 public class EffScale : MonoBehaviour {
-    private const float MIN_SCALE = 0, MAX_SCALE = 1f;
-
     private float direction = 1f, speed;
+
     [SerializeField] private float minSpeed = 0.44f, maxSpeed = 0.824f;
+    [Space]
+    [SerializeField] private bool infinity = false;
+    [SerializeField] private float minScale = 0f, maxScale = 1f;
 
     public void Start() {
         speed = Random.Range(minSpeed, maxSpeed); 
-        ScaleUp();
     }
 
     public void Update() {
         float scale = transform.localScale.x;
 
-        if (direction == 0) return;
+        if (direction == 0 && !infinity) return;
 
-        if ((scale += speed * Time.deltaTime * direction) > MAX_SCALE) {
-            scale = MAX_SCALE;
-            direction = 0;
-        }
-        else if (scale < MIN_SCALE)  {
-            scale = MIN_SCALE;
-            direction = 0;
+        scale += speed * Time.deltaTime * direction;
+        if (direction == 1f) {
+            if (scale > maxScale) {
+                scale = maxScale;
+                direction *= infinity? -1 : 0;
+            }
+        } else if (scale < minScale)  {
+            scale = minScale;
+            direction *= infinity? -1 : 0;
         }
 
         transform.localScale = new Vector2(scale, scale);
     }
 
     public void ScaleDown() {
-        transform.localScale = Vector2.one;
+        transform.localScale = new(maxScale, maxScale);
         direction = -1;
     }
 
     public void ScaleUp() {
-        transform.localScale = Vector2.zero;
+        transform.localScale = new(minScale, minScale);
         direction = 1f;
     }
 
+    public void Set(float minScale, float maxScale) {
+        this.minScale = minScale;
+        this.maxScale = maxScale;
+    }
+
     public bool IsFinished(){
+        if (infinity) return false;
+
         float scale = transform.localScale.x;
 
-        return (direction == -1f && scale == MAX_SCALE) ||
-               (direction ==  1f && scale == MIN_SCALE);
+        return (direction == -1f && scale == maxSpeed) ||
+               (direction ==  1f && scale == minScale);
     }
 }
