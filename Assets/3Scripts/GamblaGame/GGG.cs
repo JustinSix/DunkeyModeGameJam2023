@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using TMPro;
@@ -79,7 +80,7 @@ public class GGG : MonoBehaviour {
     }
 
     private enum State {
-        START_ANIMATION, WAIT, GAME
+        START_ANIMATION, WAIT, GAME, GAMEOVER
     }
 
     private State state = State.START_ANIMATION;
@@ -96,6 +97,7 @@ public class GGG : MonoBehaviour {
     public float minRunTime = 3.22f, maxRunTime = 5.67f;
     [Space]
     public GameObject megaWin;
+    [SerializeField] GameObject loseImage;
     public TextMeshProUGUI goldHolder;
 
     public SpriteAtlas atlas;
@@ -329,11 +331,28 @@ public class GGG : MonoBehaviour {
     }
 
     private void GameOver() {
-        if (true) MegaWin();
+        Debug.LogWarning("game over called");
+        state = State.GAMEOVER;
+        int rNum = Random.Range(0, 4);
+
+        if(rNum > 2) 
+        {
+            MegaWin();
+        }
+        else
+        {
+            loseImage.SetActive(true);
+        }
 
         goldHolder.text = "" + gold;
-    }
 
+        StartCoroutine(DelayedLoadStream());      
+    }
+    IEnumerator DelayedLoadStream()
+    {
+        yield return new WaitForSeconds(3f);
+        Loader.Load(Loader.Scene.StreamerScene);
+    }
     private void MegaWin() {
         megaWin.SetActive(true);
     }
