@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using TMPro;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -17,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] xqcObjects;
     [SerializeField] private GameObject[] amouranthObjects;
     [SerializeField] private GameObject[] ethanObjects;
+    [SerializeField] private TMP_Text streamerText;
 
     float pickingActivityTimer;
     private string chosenStreamer;
@@ -36,6 +39,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         chosenStreamer = PlayerPrefs.GetString("ChosenStreamer", "XQC");
+
         switch (chosenStreamer)
         {
             case "Amouranth":
@@ -43,18 +47,21 @@ public class GameManager : MonoBehaviour
                 {
                     obj.SetActive(true);
                 }
+                streamerText.text = "Amouranth";
                 break;
             case "EthanH3H3":
                 foreach (GameObject obj in ethanObjects)
                 {
                     obj.SetActive(true);
                 }
+                streamerText.text = "H3H3";
                 break;
             case "XQC":
                 foreach (GameObject obj in xqcObjects)
                 {
                     obj.SetActive(true);
                 }
+                streamerText.text = "XQC";
                 break;
 
         }
