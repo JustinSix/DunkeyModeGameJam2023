@@ -13,6 +13,8 @@ public  class ActivityManager : MonoBehaviour
     [SerializeField] private Activity[] activityArray;
     [SerializeField] private ActivityButton[] activityButtonArray;
 
+    [SerializeField] private QTEController qteController;
+
     [Header("Activity Objects to Enable")]
     [SerializeField] private GameObject hotTub;
     [SerializeField] private GameObject vaping;
@@ -90,9 +92,9 @@ public  class ActivityManager : MonoBehaviour
 
 
         AssignRandomActivities();
-        StartCoroutine(WaitForCinemachineTransition());
+        StartCoroutine(WaitForStreamerCinemachineTransition());
     }
-    IEnumerator WaitForCinemachineTransition()
+    IEnumerator WaitForStreamerCinemachineTransition()
     {
         do
         {
@@ -215,12 +217,21 @@ public  class ActivityManager : MonoBehaviour
     private void StartStreamRoomActivity(GameObject activityToEnable)
     {
         activityToEnable.SetActive(true);
-        StartCoroutine(DisableAfter(activityToEnable));
+        StartCoroutine(WaitForActivityCinemachineTransition());
+        StartCoroutine(DisableStreamActivityAfter(activityToEnable));
     }
 
-    IEnumerator DisableAfter(GameObject activityToDisable)
+    IEnumerator WaitForActivityCinemachineTransition()
     {
-        yield return new WaitForSeconds(4f);
+        do
+        {
+            yield return null;
+        } while (GameManager.Instance.cameraBrain.IsBlending);
+        qteController.InitiateQTE();
+    }
+    IEnumerator DisableStreamActivityAfter(GameObject activityToDisable)
+    {
+        yield return new WaitForSeconds(10f);
         activityToDisable.SetActive(false);
         GameManager.Instance.ChangeToStreaming();
     }

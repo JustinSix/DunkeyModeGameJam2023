@@ -7,6 +7,7 @@ public class MarioKurtManager : MonoBehaviour
     [SerializeField] private GameObject xqcObject;
     [SerializeField] private GameObject ethanObject;
     [SerializeField] private GameObject amouranthObject;
+    [SerializeField] private GameObject destinyObject;
     private string chosenStreamer;
     private void Start()
     {
@@ -22,7 +23,12 @@ public class MarioKurtManager : MonoBehaviour
             case "XQC":
                 xqcObject.SetActive(true);
                 break;
-
+            case "Destiny":
+                destinyObject.SetActive(true);  
+                break;
+            default:
+                xqcObject.SetActive(true);
+                break;
         }
     }
 }
