@@ -160,6 +160,9 @@ public  class ActivityManager : MonoBehaviour
     {
         Debug.Log("started activity button clicked");
         activityCanvas.gameObject.SetActive(false);
+
+        PlayerPrefs.SetString("CompletedActivity", activityName);
+        StreamManager.Instance.completedActivity = activityName;
         switch (activityName)
         {
             case "MarioKurt":
