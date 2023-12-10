@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] xqcObjects;
     [SerializeField] private GameObject[] amouranthObjects;
     [SerializeField] private GameObject[] ethanObjects;
+    [SerializeField] private GameObject[] destinyObjects;
     [SerializeField] private TMP_Text streamerText;
 
     float pickingActivityTimer;
@@ -63,6 +64,13 @@ public class GameManager : MonoBehaviour
                 }
                 streamerText.text = "XQC";
                 break;
+            case "Destiny":
+                foreach (GameObject obj in destinyObjects)
+                {
+                    obj.SetActive(true);
+                }
+                streamerText.text = "Destiny";
+                break;
 
         }
     }
@@ -106,5 +114,9 @@ public class GameManager : MonoBehaviour
     public void ChangeToPlayingActivity()
     {
         state = State.PlayingActivity;
+    }
+    public string GetCurrentStreamer()
+    {
+        return chosenStreamer;
     }
 }
