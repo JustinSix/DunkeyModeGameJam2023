@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Cinemachine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -10,9 +10,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float countdownToStartTimer;
     [SerializeField] private float countdownToStartTimerMax;
     [SerializeField] private float pickingActivityTimerMax;
+    public CinemachineBrain cameraBrain;
     float pickingActivityTimer;
     protected enum State
     {
+        StartStream,
         StreamView,
         PickingActivity,
         PlayingActivity,
@@ -21,7 +23,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        state = State.StreamView;
+        state = State.StartStream;
     }
 
     // Update is called once per frame
@@ -29,8 +31,11 @@ public class GameManager : MonoBehaviour
     {
         switch (state)
         {
-            case State.StreamView:
+            case State.StartStream:
                 StreamManager.Instance.ShiftToStreamView();
+                state = State.StreamView;
+                break;
+            case State.StreamView:              
                 countdownToStartTimer -= Time.deltaTime;
                 if (countdownToStartTimer < 0f)
                 {
@@ -55,7 +60,7 @@ public class GameManager : MonoBehaviour
     public void ChangeToStreaming()
     {
         countdownToStartTimer = countdownToStartTimerMax;
-        state = State.StreamView;
+        state = State.StartStream;
     }
 
     public void ChangeToPlayingActivity()

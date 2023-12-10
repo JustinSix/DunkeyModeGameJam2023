@@ -16,3 +16,4 @@ MonoBehaviour:
   sceneToLoad: 0
   streamActivity: 2
   streamer: 0
+  ActivitySprite: {fileID: 21300000, guid: 7b6457666994b3e4aaf36cdde1e8c4e7, type: 3}

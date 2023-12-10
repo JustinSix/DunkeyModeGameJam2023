@@ -14,6 +14,7 @@ public static class Loader
         FullGuysGame,
         StreamerScene,
         MarioKurt,
+        FactoryOH,
     }
 
     private static Scene targetSceneIndex;

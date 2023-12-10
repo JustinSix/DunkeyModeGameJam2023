@@ -1,4 +1,3 @@
-using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,8 +7,6 @@ using UnityEngine;
 public  class ActivityManager : MonoBehaviour
 {
     public static ActivityManager Instance { get; private set; }
-
-    [SerializeField] private CinemachineBrain cameraBrain;
 
     [SerializeField] private GameObject pickActivityVCameraO;
     [SerializeField] private GameObject activityCanvas;
@@ -26,6 +23,8 @@ public  class ActivityManager : MonoBehaviour
     [SerializeField] private GameObject vapingVCameraO;
     [SerializeField] private GameObject pianoVCameraO;
     [SerializeField] private GameObject danceVCameraO;
+
+    private bool activityResult = false;
     public enum ActivityName
     {
         MarioKurt,
@@ -37,6 +36,7 @@ public  class ActivityManager : MonoBehaviour
         //PoliticalRant,
         Vape,
         Gamble,
+        FactoryOH,
     }
     public enum StreamActivity
     {
@@ -64,7 +64,22 @@ public  class ActivityManager : MonoBehaviour
         Instance = this;      
     }
 
-    
+    private void Start()
+    {
+        //save pref of outcome in scene of game
+        //load pref of outcome here and set activity outcome here
+        int resultInt = PlayerPrefs.GetInt("ActivityResult");
+        if(resultInt == 0)
+        {
+            activityResult = false;
+        }
+        if (resultInt == 1)
+        {
+            activityResult = true;
+        }
+
+    }
+
     //shift camera to screen
     //enable ui elements of activities
     //randomly pick 3 activities and set up button/visuals for picking
@@ -79,16 +94,23 @@ public  class ActivityManager : MonoBehaviour
     }
     IEnumerator WaitForCinemachineTransition()
     {
-        while (cameraBrain.IsBlending)
+        do
         {
             yield return null;
-        }
+        } while (GameManager.Instance.cameraBrain.IsBlending);
+
         activityCanvas.SetActive(true);
     }
     public void ShiftOffActivities()
     {
         pickActivityVCameraO.SetActive(false);
     }
+
+    public bool GetActivityResult()
+    {
+        return activityResult;
+    }
+
     private void AssignRandomActivities()
     {
         activityButtonArray[0].activityButton.onClick.RemoveAllListeners();
@@ -103,7 +125,8 @@ public  class ActivityManager : MonoBehaviour
         Activity randomActivity2 = allActivities[1];
         Activity randomActivity3 = allActivities[2];
 
-        //assign to buttons
+        //assign to button1
+        activityButtonArray[0].activityButton.image.sprite = randomActivity1.ActivitySprite;
         activityButtonArray[0].activityText.text = randomActivity1.activityName.ToString();
         activityButtonArray[0].activityButton.onClick.AddListener(() =>
         {
@@ -111,7 +134,8 @@ public  class ActivityManager : MonoBehaviour
         });
         activityButtonArray[0].activityTitle = randomActivity1.activityName.ToString();
         activityButtonArray[0].activityName = randomActivity1.activityName;
-
+        //assign to button2
+        activityButtonArray[1].activityButton.image.sprite = randomActivity2.ActivitySprite;
         activityButtonArray[1].activityText.text = randomActivity2.activityName.ToString();
         activityButtonArray[1].activityButton.onClick.AddListener(() =>
         {
@@ -119,7 +143,8 @@ public  class ActivityManager : MonoBehaviour
         });
         activityButtonArray[1].activityTitle = randomActivity2.activityName.ToString();
         activityButtonArray[1].activityName = randomActivity2.activityName;
-
+        //assign to button3
+        activityButtonArray[2].activityButton.image.sprite = randomActivity3.ActivitySprite;
         activityButtonArray[2].activityText.text = randomActivity3.activityName.ToString();
         activityButtonArray[2].activityButton.onClick.AddListener(() =>
         {
@@ -177,11 +202,14 @@ public  class ActivityManager : MonoBehaviour
                 Debug.Log("Gamble");
                 Loader.Load(Loader.Scene.GambleGame);
                 break;
-
+            case "FactoryOH":
+                Loader.Load(Loader.Scene.FactoryOH);
+                break;
             default:
 
                 break;
         }
+        SetActivitySuccessCheckIfStreamerAudienceLikesActivity();
         GameManager.Instance.ChangeToPlayingActivity();
     }
     private void StartStreamRoomActivity(GameObject activityToEnable)
@@ -195,6 +223,11 @@ public  class ActivityManager : MonoBehaviour
         yield return new WaitForSeconds(4f);
         activityToDisable.SetActive(false);
         GameManager.Instance.ChangeToStreaming();
+    }
+
+    private void SetActivitySuccessCheckIfStreamerAudienceLikesActivity()
+    {
+        activityResult = true;
     }
     private void ShuffleArray<T>(T[] array)
     {

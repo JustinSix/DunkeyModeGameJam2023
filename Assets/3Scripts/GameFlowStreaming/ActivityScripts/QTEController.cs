@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 public class QTEController : MonoBehaviour
 {
-
     public static event EventHandler QTEFailed;
     public static event EventHandler QTEStarted;
     public KeyCode qteKey = KeyCode.Space;  // Change the key as needed

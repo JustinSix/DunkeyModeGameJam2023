@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/2Scenes/MarioKurt.unity
     guid: e107dbd53c5088141b9598041980b352
+  - enabled: 1
+    path: Assets/2Scenes/FactoryOH.unity
+    guid: 800a0e756436e2b4d9b42056f69a383e
   m_configObjects: {}
