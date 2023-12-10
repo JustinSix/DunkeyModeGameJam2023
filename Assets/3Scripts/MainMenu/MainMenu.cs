@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+
     [SerializeField] Button startStreamingButton;
     // Start is called before the first frame update
     void Start()
@@ -13,6 +14,12 @@ public class MainMenu : MonoBehaviour
         {
             Loader.Load(Loader.Scene.StreamerScene);
         });
+    }
+
+    public void ChooseStreamer(string streamerClickedOnName)
+    {
+        Debug.Log("Chosen streamer: " + streamerClickedOnName);
+        PlayerPrefs.SetString("ChosenStreamer", streamerClickedOnName);
     }
 
 }

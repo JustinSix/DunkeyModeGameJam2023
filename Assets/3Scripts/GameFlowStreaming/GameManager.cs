@@ -10,8 +10,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float countdownToStartTimer;
     [SerializeField] private float countdownToStartTimerMax;
     [SerializeField] private float pickingActivityTimerMax;
+
     public CinemachineBrain cameraBrain;
+
+    [Header("Streamer Objects")]
+    [SerializeField] private GameObject[] xqcObjects;
+    [SerializeField] private GameObject[] amouranthObjects;
+    [SerializeField] private GameObject[] ethanObjects;
+
     float pickingActivityTimer;
+    private string chosenStreamer;
     protected enum State
     {
         StartStream,
@@ -25,7 +33,32 @@ public class GameManager : MonoBehaviour
         Instance = this;
         state = State.StartStream;
     }
+    private void Start()
+    {
+        chosenStreamer = PlayerPrefs.GetString("ChosenStreamer", "XQC");
+        switch (chosenStreamer)
+        {
+            case "Amouranth":
+                foreach (GameObject obj in amouranthObjects)
+                {
+                    obj.SetActive(true);
+                }
+                break;
+            case "EthanH3H3":
+                foreach (GameObject obj in ethanObjects)
+                {
+                    obj.SetActive(true);
+                }
+                break;
+            case "XQC":
+                foreach (GameObject obj in xqcObjects)
+                {
+                    obj.SetActive(true);
+                }
+                break;
 
+        }
+    }
     // Update is called once per frame
     void Update()
     {
