@@ -331,26 +331,41 @@ public class GGG : MonoBehaviour {
     }
 
     private void GameOver() {
-        Debug.LogWarning("game over called");
-        state = State.GAMEOVER;
-        int rNum = Random.Range(0, 4);
 
+        Debug.Log("gameovercalled");
+        state = State.GAMEOVER;
+        int rNum = Random.Range(0, 5);
+        bool won = false;
         if(rNum > 2) 
         {
+            Debug.LogWarning("gamble won");
             MegaWin();
+            won = true;
         }
         else
         {
+            Debug.LogWarning("gamble lost");
+            won = false;
             loseImage.SetActive(true);
         }
 
         goldHolder.text = "" + gold;
 
+        if (won)
+        {
+            PlayerPrefs.SetInt("ActivityResult", 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("ActivityResult", 0);
+        }
+        PlayerPrefs.SetInt("CompletedActivityPoints", 2000);
+
         StartCoroutine(DelayedLoadStream());      
     }
     IEnumerator DelayedLoadStream()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         Loader.Load(Loader.Scene.StreamerScene);
     }
     private void MegaWin() {

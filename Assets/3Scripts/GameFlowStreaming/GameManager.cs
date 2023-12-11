@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     float pickingActivityTimer;
     private string chosenStreamer;
+    private static bool loadedOnce = false;
     protected enum State
     {
         StartStream,
@@ -35,7 +36,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        state = State.StartStream;
+
+        state = State.PickingActivity;
     }
     private void Start()
     {
@@ -73,6 +75,18 @@ public class GameManager : MonoBehaviour
                 break;
 
         }
+        if (!loadedOnce)
+        {
+            loadedOnce = true;
+            pickingActivityTimer = pickingActivityTimerMax;
+            ActivityManager.Instance.ShiftToActivities();
+            StreamManager.Instance.ShiftOffStreamView();
+        }
+        else
+        {
+            state = State.StartStream;
+        }
+
     }
     // Update is called once per frame
     void Update()
@@ -105,6 +119,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
     public void ChangeToStreaming()
     {
         countdownToStartTimer = countdownToStartTimerMax;
@@ -118,5 +133,9 @@ public class GameManager : MonoBehaviour
     public string GetCurrentStreamer()
     {
         return chosenStreamer;
+    }
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteAll();
     }
 }

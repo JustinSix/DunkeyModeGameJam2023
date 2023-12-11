@@ -10,7 +10,7 @@ public class QTEController : MonoBehaviour
     private bool qteActive = false;
 
     private int totalQTE = 0;
-    private int failedQTE = 0;
+    private int qteLeft = 0;
     private int succesfulQTE = 0;
 
     private QTEKeyManager activeKeyM;
@@ -38,8 +38,8 @@ public class QTEController : MonoBehaviour
 
             ResetQTE();
 
-            totalQTE--;
-            if(totalQTE <= 0)
+            qteLeft--;
+            if(qteLeft <= 0)
             {
                 qteActive = false;
             }
@@ -67,8 +67,9 @@ public class QTEController : MonoBehaviour
     {
         //QTECanvasO.SetActive(false);
         Debug.Log("QTE Failed!");
-        failedQTE++;
+        qteLeft--;
         ResetQTE();
+        StartQTE();
     }
 
     public void InitiateQTE()
@@ -78,6 +79,7 @@ public class QTEController : MonoBehaviour
         Debug.Log("QTE Initiated!");
 
         int rNum = UnityEngine.Random.Range(8, 16);
+        qteLeft = rNum;
         totalQTE = rNum;
         StartQTE();
     }
@@ -112,5 +114,22 @@ public class QTEController : MonoBehaviour
         //qte to active
         qteActive = true;
         timer = 0f;
+    }
+    public void EndQTE()
+    {
+        float successPercentage = (float)succesfulQTE / (float)totalQTE;
+        Debug.Log("success percentage float: " + successPercentage);
+        bool wonQTE = false;
+        if (successPercentage > .5f)
+        {
+            wonQTE = true;
+        }
+        Debug.Log("wonQTE bool is: " + wonQTE);
+        ActivityManager.Instance.SetActivityResult(wonQTE);
+        ResetQTE();
+        qteLeft = 0;
+        totalQTE = 0;
+        succesfulQTE = 0;
+        qteActive = false;
     }
 }

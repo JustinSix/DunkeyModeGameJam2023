@@ -18,16 +18,29 @@ public class StreamManager : MonoBehaviour
     [SerializeField] private TMP_Text followersText;
     [SerializeField] private TMP_Text viewersText;
 
+
+    [Header("Streamer SO's")]
+    [SerializeField] private Streamer amouranthSO;
+    [SerializeField] private Streamer destinySO;
+    [SerializeField] private Streamer xqcSO;
+    [SerializeField] private Streamer ethanSO;
+    [SerializeField] private Streamer hasanSO;
+
     private int currentFollowers = 10000;
     private int currentViewers = 1000;
     public string completedActivity;
+    public int activityEarnedPoints; 
     private void Awake()
     {
         Instance = this;
+        currentViewers = PlayerPrefs.GetInt("CurrentViewers", 1000);
+        currentFollowers = PlayerPrefs.GetInt("CurrentFollowers", 10000);
+
     }
     private void Start()
     {
         completedActivity = PlayerPrefs.GetString("CompletedActivity", "");
+        activityEarnedPoints = PlayerPrefs.GetInt("CompletedActivityPoints", 1);
     }
     public void ShiftOffStreamView()
     {
@@ -58,7 +71,6 @@ public class StreamManager : MonoBehaviour
 
     private void PositiveReaction()
     {
-        Debug.Log("POSITIVE REACTION");
         int rNum = UnityEngine.Random.Range(0, positiveChatMessages.Length);
 
         chatImage.sprite = positiveChatMessages[rNum];
@@ -70,10 +82,11 @@ public class StreamManager : MonoBehaviour
 
         followersText.text = currentFollowers.ToString();
         viewersText.text = currentViewers.ToString();
+        PlayerPrefs.SetInt("CurrentViewers", currentViewers);
+        PlayerPrefs.SetInt("CurrentFollowers", currentFollowers);
     }
     private void NegativeReaction()
     {
-        Debug.Log("NEGATIVE REACTION");
         int rNum = UnityEngine.Random.Range(0, negativeChatMessages.Length);
 
         chatImage.sprite = negativeChatMessages[rNum];
@@ -86,36 +99,44 @@ public class StreamManager : MonoBehaviour
         followersText.text = currentFollowers.ToString();
 
         viewersText.text = currentViewers.ToString();
+        PlayerPrefs.SetInt("CurrentViewers", currentViewers);
+        PlayerPrefs.SetInt("CurrentFollowers", currentFollowers);
     }
 
     private int GetFollowerChanges(bool isPositive)
     {
         int totalFollowers = 0;
-
-        if (isPositive)
-        {
-
-        }
         //determine streamer x activity multiplier
+        //if activity is synergistic with streamer more points
+        //if activity isnt then less points
+        float multiplier = 1f;
         switch (GameManager.Instance.GetCurrentStreamer())
         {
             case "Amouranth":
-
+                multiplier = GetMultiplierByStreamer(amouranthSO);
                 break;
             case "EthanH3H3":
-
+                multiplier = GetMultiplierByStreamer(ethanSO);
                 break;
             case "XQC":
-
+                multiplier = GetMultiplierByStreamer(xqcSO);
                 break;
             case "Destiny":
-
+                multiplier = GetMultiplierByStreamer(destinySO);
                 break;
-
         }
 
-        //determine activity success level
-        
+        if (isPositive)
+        {
+            totalFollowers = Mathf.RoundToInt(activityEarnedPoints * multiplier);
+        }
+        else
+        {
+            totalFollowers = Mathf.RoundToInt(activityEarnedPoints / multiplier);
+        }
+        totalFollowers = Mathf.RoundToInt(activityEarnedPoints / UnityEngine.Random.Range(1.1f, 1.9f));
+
+        Debug.Log("total followers after calculation: " + totalFollowers + "\nIs positive: " + isPositive);
 
         return totalFollowers;
     }
@@ -123,212 +144,81 @@ public class StreamManager : MonoBehaviour
     private int GetViewerChanges(bool isPositive)
     {
         int totalViewers = 0;
-        if (isPositive)
+        //determine streamer x activity multiplier
+        //if activity is synergistic with streamer more points
+        //if activity isnt then less points
+        float multiplier = 1f;
+        switch (GameManager.Instance.GetCurrentStreamer())
         {
-            //determine streamer x activity multiplier
-            //if activity is synergistic with streamer more points
-            //if activity isnt then less points
-            float multiplier = 1f;
-            switch (GameManager.Instance.GetCurrentStreamer())
-            {
-                case "Amouranth":
-                    switch (completedActivity)
-                    {
-                        case "MarioKurt":
-                            multiplier = .20f;
-                            break;
-                        case "FullGuys":
-                            multiplier = .20f;
-                            break;
-                        case "PlayPiano":
-                            multiplier = .20f;
-                            break;
-                        case "HotTub":
-                            multiplier = .20f;
-                            break;
-
-                        //case "Eat":
-
-                        //    break;
-
-                        case "Dance":
-                            multiplier = 1.50f;
-                            break;
-
-                        //case "PoliticalRant":
-
-                        //    break;
-
-                        case "Vape":
-                            multiplier = 1f;
-                            Debug.Log("Vape");
-
-                            break;
-
-                        case "Gamble":
-                            multiplier = 1.50f;
-                            break;
-                        case "FactoryOH":
-                            multiplier = .10f;
-                            break;
-                        default:
-
-                            break;
-                    }
-                    break;
-                case "EthanH3H3":
-                    switch (completedActivity)
-                    {
-                        case "MarioKurt":
-
-                            break;
-
-                        case "FullGuys":
-
-                            break;
-
-                        case "PlayPiano":
-
-                            break;
-
-                        case "HotTub":
-
-                            break;
-
-                        //case "Eat":
-
-                        //    break;
-
-                        case "Dance":
-
-                            break;
-
-                        //case "PoliticalRant":
-
-                        //    break;
-
-                        case "Vape":
-                            Debug.Log("Vape");
-
-                            break;
-
-                        case "Gamble":
-
-                            break;
-                        case "FactoryOH":
-
-                            break;
-                        default:
-
-                            break;
-                    }
-                    break;
-                case "XQC":
-                    switch (completedActivity)
-                    {
-                        case "MarioKurt":
-
-                            break;
-
-                        case "FullGuys":
-
-                            break;
-
-                        case "PlayPiano":
-
-                            break;
-
-                        case "HotTub":
-
-                            break;
-
-                        //case "Eat":
-
-                        //    break;
-
-                        case "Dance":
-
-                            break;
-
-                        //case "PoliticalRant":
-
-                        //    break;
-
-                        case "Vape":
-                            Debug.Log("Vape");
-
-                            break;
-
-                        case "Gamble":
-
-                            break;
-                        case "FactoryOH":
-
-                            break;
-                        default:
-
-                            break;
-                    }
-                    break;
-                case "Destiny":
-                    switch (completedActivity)
-                    {
-                        case "MarioKurt":
-
-                            break;
-
-                        case "FullGuys":
-
-                            break;
-
-                        case "PlayPiano":
-
-                            break;
-
-                        case "HotTub":
-
-                            break;
-
-                        //case "Eat":
-
-                        //    break;
-
-                        case "Dance":
-
-                            break;
-
-                        //case "PoliticalRant":
-
-                        //    break;
-
-                        case "Vape":
-                            Debug.Log("Vape");
-
-                            break;
-
-                        case "Gamble":
-
-                            break;
-                        case "FactoryOH":
-
-                            break;
-                        default:
-
-                            break;
-                    }
-                    break;
-
-            }
-
-            //determine activity success level
-            //multiply success level by modifier
-
+            case "Amouranth":
+                multiplier = GetMultiplierByStreamer(amouranthSO);
+                break;
+            case "EthanH3H3":
+                multiplier = GetMultiplierByStreamer(ethanSO);
+                break;
+            case "XQC":
+                multiplier = GetMultiplierByStreamer(xqcSO);
+                break;
+            case "Destiny":
+                multiplier = GetMultiplierByStreamer(destinySO);
+                break;
         }
 
-
-        return totalViewers;
+        if (isPositive)
+        {
+            totalViewers = Mathf.RoundToInt(activityEarnedPoints * multiplier);
+        }
+        else
+        {
+            totalViewers = Mathf.RoundToInt(activityEarnedPoints / multiplier);
+        }
+        Debug.Log("total viewers after calculation: " + totalViewers + "\nIs positive: " + isPositive);
+        return totalViewers + UnityEngine.Random.Range(0,10);
     }
+    private float GetMultiplierByStreamer(Streamer streamer)
+    {
+        float multiplier = 0f;
+        switch (completedActivity)
+        {
+            case "MarioKurt":
+                multiplier = streamer.MarioKurtMultiplier;
+                break;
+            case "FullGuys":
+                multiplier = streamer.FullGuysMultiplier;
+                break;
+            case "PlayPiano":
+                multiplier = streamer.PlayPianoMultiplier;
+                break;
+            case "HotTub":
+                multiplier = streamer.HotTubMultiplier;
+                break;
+            //case "Eat":
 
+            //    break;
+
+            case "Dance":
+                multiplier = streamer.DanceMultiplier;
+                break;
+            //case "PoliticalRant":
+
+            //    break;
+
+            case "Vape":
+                multiplier = streamer.VapeMultiplier;
+                break;
+
+            case "Gamble":
+                multiplier = streamer.GambleMultiplier;
+                break;
+            case "FactoryOH":
+                multiplier = streamer.FactoryOhMultiplier;
+                break;
+            default:
+
+                break;
+        }
+        return multiplier;
+    }
     IEnumerator WaitForCinemachineTransition()
     {
         do

@@ -8,6 +8,7 @@ public class MarioKurtManager : MonoBehaviour
     [SerializeField] private GameObject ethanObject;
     [SerializeField] private GameObject amouranthObject;
     [SerializeField] private GameObject destinyObject;
+    [SerializeField] private int activityPointsValue;
     private string chosenStreamer;
     private void Start()
     {
@@ -30,5 +31,18 @@ public class MarioKurtManager : MonoBehaviour
                 xqcObject.SetActive(true);
                 break;
         }
+    }
+
+    public void CalculateResults(bool won)
+    {
+        if(won)
+        {
+            PlayerPrefs.SetInt("ActivityResult", 1);
+        }
+        else
+        {
+           PlayerPrefs.SetInt("ActivityResult", 0);
+        }
+        PlayerPrefs.SetInt("CompletedActivityPoints", activityPointsValue);
     }
 }

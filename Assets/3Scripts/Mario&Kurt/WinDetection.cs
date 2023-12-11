@@ -1,19 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VehicleBehaviour;
 
-public class DeathDetection : MonoBehaviour
+public class WinDetection : MonoBehaviour
 {
     [SerializeField] MarioKurtManager marioKurtManager;
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("trigger happened");
-        if(other.gameObject.CompareTag("Kart"))
+        if (other.gameObject.CompareTag("Kart"))
         {
             Debug.Log("tag of kart triggered");
 
-            marioKurtManager.CalculateResults(false);
+            marioKurtManager.CalculateResults(true);
 
             Loader.Load(Loader.Scene.StreamerScene);
         }

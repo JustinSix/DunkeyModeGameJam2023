@@ -177,11 +177,13 @@ public  class ActivityManager : MonoBehaviour
 
             case "PlayPiano":
                 Debug.Log("PlayPiano");
+                StreamManager.Instance.activityEarnedPoints = 1000;
                 StartStreamRoomActivity(piano);
                 break;
 
             case "HotTub":
                 Debug.Log("HotTub");
+                StreamManager.Instance.activityEarnedPoints = 1000;
                 StartStreamRoomActivity(hotTub);
                 break;
 
@@ -191,6 +193,7 @@ public  class ActivityManager : MonoBehaviour
 
             case "Dance":
                 Debug.Log("Dance");
+                StreamManager.Instance.activityEarnedPoints = 1000;
                 StartStreamRoomActivity(dance);
                 break;
 
@@ -200,6 +203,7 @@ public  class ActivityManager : MonoBehaviour
 
             case "Vape":
                 Debug.Log("Vape");
+                StreamManager.Instance.activityEarnedPoints = 1000;
                 StartStreamRoomActivity(vaping);
                 break;
 
@@ -214,7 +218,6 @@ public  class ActivityManager : MonoBehaviour
 
                 break;
         }
-        SetActivitySuccessCheckIfStreamerAudienceLikesActivity();
         GameManager.Instance.ChangeToPlayingActivity();
     }
     private void StartStreamRoomActivity(GameObject activityToEnable)
@@ -236,12 +239,13 @@ public  class ActivityManager : MonoBehaviour
     {
         yield return new WaitForSeconds(10f);
         activityToDisable.SetActive(false);
+        qteController.EndQTE();
         GameManager.Instance.ChangeToStreaming();
     }
 
-    private void SetActivitySuccessCheckIfStreamerAudienceLikesActivity()
+    public void SetActivityResult(bool wonActivity)
     {
-        activityResult = true;
+        activityResult = wonActivity;
     }
     private void ShuffleArray<T>(T[] array)
     {
