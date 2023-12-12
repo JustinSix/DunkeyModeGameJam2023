@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] amouranthObjects;
     [SerializeField] private GameObject[] ethanObjects;
     [SerializeField] private GameObject[] destinyObjects;
+    [SerializeField] private GameObject[] hasanObjects;
     [SerializeField] private TMP_Text streamerText;
 
     float pickingActivityTimer;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
         StreamView,
         PickingActivity,
         PlayingActivity,
+        GameOver,
     }
 
     private void Awake()
@@ -76,7 +78,13 @@ public class GameManager : MonoBehaviour
                 }
                 streamerText.text = "Destiny";
                 break;
-
+            case "Hasan":
+                foreach (GameObject obj in hasanObjects)
+                {
+                    obj.SetActive(true);
+                }
+                streamerText.text = "Hasan";
+                break;
         }
         if (!loadedOnce)
         {
@@ -116,7 +124,10 @@ public class GameManager : MonoBehaviour
                 break;
            
             case State.PlayingActivity:
-                //game ended
+
+                break;
+            case State.GameOver:
+
                 break;
             default:
                 break;
@@ -136,9 +147,5 @@ public class GameManager : MonoBehaviour
     public string GetCurrentStreamer()
     {
         return chosenStreamer;
-    }
-    private void OnApplicationQuit()
-    {
-        PlayerPrefs.DeleteAll();
     }
 }

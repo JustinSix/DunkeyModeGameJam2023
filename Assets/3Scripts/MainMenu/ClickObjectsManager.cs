@@ -12,6 +12,7 @@ public class ClickObjectsManager : MonoBehaviour
     [SerializeField] private GameObject amouranthSpotlight;
     [SerializeField] private GameObject destinySpotlight;
     [SerializeField] private GameObject ethanSpotlight;
+    [SerializeField] private GameObject hasanSpotlight;
     private void Update()
     {
         // Check for mouse click
@@ -30,6 +31,7 @@ public class ClickObjectsManager : MonoBehaviour
                 string chosenStreamer = hit.collider.name;
                 mainMenuS.ChooseStreamer(hit.collider.name);
                 SpotlightSelectedStreamer(chosenStreamer);
+                Debug.Log(chosenStreamer);
             }
         }
     }
@@ -45,6 +47,7 @@ public class ClickObjectsManager : MonoBehaviour
                 ethanSpotlight.SetActive(false);
                 xqcSpotlight.SetActive(false);
                 destinySpotlight.SetActive(false);
+                hasanSpotlight.SetActive(false);
                 break;
             case "EthanH3H3":
                 ethanSpotlight.SetActive(true);
@@ -52,6 +55,7 @@ public class ClickObjectsManager : MonoBehaviour
                 amouranthSpotlight.SetActive(false);
                 xqcSpotlight.SetActive(false);
                 destinySpotlight.SetActive(false);
+                hasanSpotlight.SetActive(false);
                 break;
             case "XQC":
                 xqcSpotlight.SetActive(true);
@@ -59,6 +63,7 @@ public class ClickObjectsManager : MonoBehaviour
                 ethanSpotlight.SetActive(false);
                 amouranthSpotlight.SetActive(false);
                 destinySpotlight.SetActive(false);
+                hasanSpotlight.SetActive(false);
                 break;
             case "Destiny":
                 destinySpotlight.SetActive(true);
@@ -66,6 +71,15 @@ public class ClickObjectsManager : MonoBehaviour
                 ethanSpotlight.SetActive(false);
                 xqcSpotlight.SetActive(false);
                 amouranthSpotlight.SetActive(false);
+                hasanSpotlight.SetActive(false);
+                break;
+            case "Hasan":
+                hasanSpotlight.SetActive(true);
+
+                ethanSpotlight.SetActive(false);
+                xqcSpotlight.SetActive(false);
+                amouranthSpotlight.SetActive(false);
+                destinySpotlight.SetActive(false);
                 break;
 
         }

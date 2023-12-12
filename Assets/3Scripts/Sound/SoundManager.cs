@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip hottubMode;
     [SerializeField] private AudioClip pianoMode;
     [SerializeField] private AudioClip gamingMode;
+    [SerializeField] private AudioClip gamblingMode;
     [Header("Audio Clips for MODE Songs")]
     [SerializeField] private AudioClip pianoGoodSound;
     [SerializeField] private AudioClip pianoBadSound;
@@ -39,6 +40,7 @@ public class SoundManager : MonoBehaviour
         HOTTUBMODE,
         PIANOMODE,
         GAMINGMODE,
+        GAMBLINGMODE,
         GOODPIANOPLAY,
         BADPIANOPLAY,
         SONGHOTTUB,
@@ -95,6 +97,10 @@ public class SoundManager : MonoBehaviour
                 break;
             case SoundName.GAMINGMODE:
                 clipToPlay = gamingMode;
+                volume = 0.3f;
+                break;
+            case SoundName.GAMBLINGMODE:
+                clipToPlay = gamblingMode;
                 volume = 0.3f;
                 break;
             case SoundName.GOODPIANOPLAY:

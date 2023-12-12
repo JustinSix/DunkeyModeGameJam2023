@@ -110,6 +110,14 @@ public class StreamManager : MonoBehaviour
 
         currentFollowers -= GetFollowerChanges(false);
 
+        if(currentFollowers < 0)
+        {
+            currentFollowers = 0;
+        }
+        if(currentViewers < 0)
+        {
+            currentViewers = 0; 
+        }
         PlayerPrefs.SetInt("CurrentViewers", currentViewers);
         PlayerPrefs.SetInt("CurrentFollowers", currentFollowers);
     }

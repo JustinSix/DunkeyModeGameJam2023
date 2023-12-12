@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -20,6 +21,7 @@ public class FactoryOHManager : MonoBehaviour
     [SerializeField] Sprite artFactory;
 
     [SerializeField] List<int> indexArray = new List<int>();
+    [SerializeField] TMP_Text modeText;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +36,12 @@ public class FactoryOHManager : MonoBehaviour
 
         backButton.gameObject.SetActive(false);
         AssignFactoryToButtons();
+
+        SoundManager.Instance.SpawnSound(SoundManager.SoundName.GAMINGMODE);
+        modeText.text = "GAMING MODE";
+        RectTransform modeTextRectTransform = modeText.GetComponent<RectTransform>();
+        modeTextRectTransform.DOScale(1, .5f);
+        StartCoroutine(LerpAnchoredPosition(modeTextRectTransform, new Vector2(0, 435), .4f));
     }
 
     private void AssignFactoryToButtons()
@@ -116,5 +124,27 @@ public class FactoryOHManager : MonoBehaviour
             default: 
                 break;
         }
+    }
+    IEnumerator LerpAnchoredPosition(RectTransform rectTransform, Vector2 targetPos, float duration)
+    {
+        float elapsedTime = 0f;
+        Vector2 startPos = rectTransform.anchoredPosition;
+
+        while (elapsedTime < duration)
+        {
+            rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetPos, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final position is set
+        rectTransform.anchoredPosition = targetPos;
+
+        Debug.Log("Lerping anchoredPosition complete!");
+
+        yield return new WaitForSeconds(2f);
+
+        modeText.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+        modeText.GetComponent<RectTransform>().localScale = Vector3.zero;
     }
 }
