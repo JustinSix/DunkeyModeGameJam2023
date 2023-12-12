@@ -152,7 +152,6 @@ public  class ActivityManager : MonoBehaviour
 
     private void StartActivity(string activityName)
     {
-        Debug.Log("started activity button clicked");
         activityCanvas.gameObject.SetActive(false);
 
         PlayerPrefs.SetString("CompletedActivity", activityName);

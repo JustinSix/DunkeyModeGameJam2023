@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip winQTE;
     [SerializeField] private AudioClip victorySound;
     [SerializeField] private AudioClip losingSound;
-
+    [SerializeField] private AudioClip streamerSelectedSound;
     [Header("Audio Clips for MODES")]
     [SerializeField] private AudioClip danceMode;
     [SerializeField] private AudioClip vapeMode;
@@ -43,6 +43,7 @@ public class SoundManager : MonoBehaviour
         BADPIANOPLAY,
         SONGHOTTUB,
         SONGDANCE,
+        SELECTEDSTREAMER,
     }
 
     private void Awake()
@@ -115,6 +116,10 @@ public class SoundManager : MonoBehaviour
                 clipToPlay = hotTubSong;
                 volume = 0.17f;
                 timeTillDestroy = 10;
+                break;
+            case SoundName.SELECTEDSTREAMER:
+                clipToPlay = streamerSelectedSound;
+                volume = 0.15f;
                 break;
             default:
                 clipToPlay = null;

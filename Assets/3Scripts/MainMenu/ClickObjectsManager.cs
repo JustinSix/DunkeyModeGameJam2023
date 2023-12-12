@@ -8,7 +8,10 @@ public class ClickObjectsManager : MonoBehaviour
     // Event to register for when the object is clicked
     public event EventHandler Clicked;
     [SerializeField] MainMenu mainMenuS;
-
+    [SerializeField] private GameObject xqcSpotlight;
+    [SerializeField] private GameObject amouranthSpotlight;
+    [SerializeField] private GameObject destinySpotlight;
+    [SerializeField] private GameObject ethanSpotlight;
     private void Update()
     {
         // Check for mouse click
@@ -24,11 +27,47 @@ public class ClickObjectsManager : MonoBehaviour
             // Perform a raycast to check if the object is clicked
             if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log("Clicked on: " + hit.collider.name);
+                string chosenStreamer = hit.collider.name;
                 mainMenuS.ChooseStreamer(hit.collider.name);
+                SpotlightSelectedStreamer(chosenStreamer);
             }
         }
     }
 
+    private void SpotlightSelectedStreamer(string chosenStreamer)
+    {
+        SoundManager.Instance.SpawnSound(SoundManager.SoundName.SELECTEDSTREAMER);
+        switch (chosenStreamer)
+        {
+            case "Amouranth":
+                amouranthSpotlight.SetActive(true);
 
+                ethanSpotlight.SetActive(false);
+                xqcSpotlight.SetActive(false);
+                destinySpotlight.SetActive(false);
+                break;
+            case "EthanH3H3":
+                ethanSpotlight.SetActive(true);
+
+                amouranthSpotlight.SetActive(false);
+                xqcSpotlight.SetActive(false);
+                destinySpotlight.SetActive(false);
+                break;
+            case "XQC":
+                xqcSpotlight.SetActive(true);
+
+                ethanSpotlight.SetActive(false);
+                amouranthSpotlight.SetActive(false);
+                destinySpotlight.SetActive(false);
+                break;
+            case "Destiny":
+                destinySpotlight.SetActive(true);
+
+                ethanSpotlight.SetActive(false);
+                xqcSpotlight.SetActive(false);
+                amouranthSpotlight.SetActive(false);
+                break;
+
+        }
+    }
 }
