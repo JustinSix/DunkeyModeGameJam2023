@@ -20,3 +20,4 @@ MonoBehaviour:
   VapeMultiplier: 0.5
   GambleMultiplier: 0.1
   FactoryOhMultiplier: 2
+  AnimalWellMultiplier: 1

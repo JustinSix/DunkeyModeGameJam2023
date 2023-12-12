@@ -15,6 +15,7 @@ public static class Loader
         StreamerScene,
         MarioKurt,
         FactoryOH,
+        AnimalWell,
     }
 
     private static Scene targetSceneIndex;

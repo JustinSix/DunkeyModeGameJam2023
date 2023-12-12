@@ -39,17 +39,7 @@ public  class ActivityManager : MonoBehaviour
         Vape,
         Gamble,
         FactoryOH,
-    }
-    public enum StreamActivity
-    {
-        Game,
-        PlayPiano,
-        HotTub,
-        //Eat,
-        Dance,
-        //PoliticalRant,
-        Vape,
-        Gamble,
+        AnimalWell,
     }
     public enum Streamer
     {
@@ -213,6 +203,9 @@ public  class ActivityManager : MonoBehaviour
                 break;
             case "FactoryOH":
                 Loader.Load(Loader.Scene.FactoryOH);
+                break;
+            case "AnimalWell":
+                Loader.Load(Loader.Scene.AnimalWell);
                 break;
             default:
 

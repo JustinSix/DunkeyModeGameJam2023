@@ -25,6 +25,10 @@ public class FactoryOHManager : MonoBehaviour
     {
         backButton.onClick.AddListener(() =>
         {
+            PlayerPrefs.SetInt("ActivityResult", 1);
+
+            PlayerPrefs.SetInt("CompletedActivityPoints", 800);
+
             Loader.Load(Loader.Scene.StreamerScene);
         });
 

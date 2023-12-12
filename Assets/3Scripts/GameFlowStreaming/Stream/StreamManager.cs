@@ -28,6 +28,8 @@ public class StreamManager : MonoBehaviour
 
     private int currentFollowers = 10000;
     private int currentViewers = 1000;
+    private int startingFollowersValue;
+    private int startingViewersValue;
     public string completedActivity;
     public int activityEarnedPoints; 
     private void Awake()
@@ -71,6 +73,9 @@ public class StreamManager : MonoBehaviour
 
     private void PositiveReaction()
     {
+        startingFollowersValue = currentFollowers;
+        startingViewersValue = currentViewers;
+
         int rNum = UnityEngine.Random.Range(0, positiveChatMessages.Length);
 
         chatImage.sprite = positiveChatMessages[rNum];
@@ -79,14 +84,14 @@ public class StreamManager : MonoBehaviour
 
         currentFollowers += GetFollowerChanges(true);
 
-
-        followersText.text = currentFollowers.ToString();
-        viewersText.text = currentViewers.ToString();
         PlayerPrefs.SetInt("CurrentViewers", currentViewers);
         PlayerPrefs.SetInt("CurrentFollowers", currentFollowers);
     }
     private void NegativeReaction()
     {
+        startingFollowersValue = currentFollowers;
+        startingViewersValue = currentViewers;
+
         int rNum = UnityEngine.Random.Range(0, negativeChatMessages.Length);
 
         chatImage.sprite = negativeChatMessages[rNum];
@@ -95,14 +100,24 @@ public class StreamManager : MonoBehaviour
 
         currentFollowers -= GetFollowerChanges(false);
 
-
-        followersText.text = currentFollowers.ToString();
-
-        viewersText.text = currentViewers.ToString();
         PlayerPrefs.SetInt("CurrentViewers", currentViewers);
         PlayerPrefs.SetInt("CurrentFollowers", currentFollowers);
     }
+    private IEnumerator LerpText(int startValue, int endValue, TMP_Text textElement)
+    {
+        float elapsedTime = 0f;
+        float lerpTime = 1.5f; // Adjust the time as needed
 
+        while (elapsedTime < lerpTime)
+        {
+            textElement.text = Mathf.Lerp(startValue, endValue, elapsedTime / lerpTime).ToString("F0");
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final value is set
+        textElement.text = endValue.ToString("F0");
+    }
     private int GetFollowerChanges(bool isPositive)
     {
         int totalFollowers = 0;
@@ -213,6 +228,9 @@ public class StreamManager : MonoBehaviour
             case "FactoryOH":
                 multiplier = streamer.FactoryOhMultiplier;
                 break;
+            case "AnimalWell":
+                multiplier = streamer.AnimalWellMultiplier;
+                break;
             default:
 
                 break;
@@ -227,5 +245,7 @@ public class StreamManager : MonoBehaviour
         } while (GameManager.Instance.cameraBrain.IsBlending);
 
         streamViewCanvas.SetActive(true);
+        StartCoroutine(LerpText(startingViewersValue, currentViewers, viewersText));
+        StartCoroutine(LerpText(startingFollowersValue, currentFollowers, followersText));
     }
 }

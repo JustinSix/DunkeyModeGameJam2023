@@ -7,7 +7,5 @@ public class Activity : ScriptableObject
 {
     public ActivityManager.ActivityName activityName;
     public Loader.Scene sceneToLoad;
-    public ActivityManager.StreamActivity streamActivity;
-    public ActivityManager.Streamer streamer;
     public Sprite ActivitySprite;
 }

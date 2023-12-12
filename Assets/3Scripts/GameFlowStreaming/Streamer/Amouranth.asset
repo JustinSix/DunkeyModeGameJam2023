@@ -12,3 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f39c0d1adfcab4795dfeba57dc6919, type: 3}
   m_Name: Amouranth
   m_EditorClassIdentifier: 
+  MarioKurtMultiplier: 0.2
+  FullGuysMultiplier: 0.2
+  PlayPianoMultiplier: 0.2
+  HotTubMultiplier: 2
+  DanceMultiplier: 1.5
+  VapeMultiplier: 1
+  GambleMultiplier: 1.5
+  FactoryOhMultiplier: 0.1
+  AnimalWellMultiplier: 1
