@@ -4,14 +4,20 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 public class StreamManager : MonoBehaviour
 {
     public static StreamManager Instance { get; private set; }
-
+    [Header("Visual Feedback")]
     [SerializeField] private Image chatImage;
     [SerializeField] private Sprite[] positiveChatMessages;
     [SerializeField] private Sprite[] negativeChatMessages;
+    [SerializeField] private TMP_Text feedbackTextNumber;
+    [SerializeField] private TMP_Text feedbackTextType;
+    [SerializeField] private Color negativeFColor;
+    [SerializeField] private Color positiveFColor;
 
+    [Header("Essential UI")]
     [SerializeField] private GameObject streamingWebVCameraO;
     [SerializeField] private GameObject streamViewCanvas;
 
@@ -26,12 +32,14 @@ public class StreamManager : MonoBehaviour
     [SerializeField] private Streamer ethanSO;
     [SerializeField] private Streamer hasanSO;
 
+    public string completedActivity;
+    public int activityEarnedPoints;
+
     private int currentFollowers = 10000;
     private int currentViewers = 1000;
     private int startingFollowersValue;
     private int startingViewersValue;
-    public string completedActivity;
-    public int activityEarnedPoints; 
+    private bool feedbackPositive = false;
     private void Awake()
     {
         Instance = this;
@@ -73,6 +81,7 @@ public class StreamManager : MonoBehaviour
 
     private void PositiveReaction()
     {
+        feedbackPositive = true;
         startingFollowersValue = currentFollowers;
         startingViewersValue = currentViewers;
 
@@ -89,6 +98,7 @@ public class StreamManager : MonoBehaviour
     }
     private void NegativeReaction()
     {
+        feedbackPositive = false;
         startingFollowersValue = currentFollowers;
         startingViewersValue = currentViewers;
 
@@ -247,5 +257,50 @@ public class StreamManager : MonoBehaviour
         streamViewCanvas.SetActive(true);
         StartCoroutine(LerpText(startingViewersValue, currentViewers, viewersText));
         StartCoroutine(LerpText(startingFollowersValue, currentFollowers, followersText));
+
+        if (feedbackPositive)
+        {
+            feedbackTextNumber.color = positiveFColor;
+            feedbackTextType.color = positiveFColor;
+            feedbackTextNumber.text = "+";
+            SoundManager.Instance.SpawnSound(SoundManager.SoundName.VICTORY_SOUND);
+        }
+        else
+        {
+            feedbackTextNumber.color = negativeFColor;
+            feedbackTextType.color = negativeFColor;
+            feedbackTextNumber.text = "";
+            SoundManager.Instance.SpawnSound(SoundManager.SoundName.LOSING_SOUND);
+        }
+
+        int followersGained = currentFollowers - startingFollowersValue;
+        feedbackTextNumber.text += followersGained.ToString();
+        feedbackTextNumber.GetComponent<RectTransform>().DOScale(1, .4f);
+
+        feedbackTextType.text = "followers";
+        feedbackTextType.GetComponent<RectTransform>().DOScale(1, .4f);
+
+        yield return new WaitForSeconds(1.1f);
+        feedbackTextNumber.GetComponent<RectTransform>().localScale = Vector3.zero;
+        feedbackTextType.GetComponent<RectTransform>().localScale = Vector3.zero;
+
+        if(feedbackPositive)
+        {
+            feedbackTextNumber.text = "+";
+        }
+        else
+        {
+            feedbackTextNumber.text = "";
+        }
+        int viewersGained = currentViewers - startingViewersValue;
+        feedbackTextNumber.text += viewersGained.ToString();
+        feedbackTextNumber.DOScale(1, .4f);
+
+        feedbackTextType.text = "viewers";
+        feedbackTextType.GetComponent<RectTransform>().DOScale(1, .4f);
+
+        yield return new WaitForSeconds(1.1f);
+        feedbackTextNumber.GetComponent<RectTransform>().localScale = Vector3.zero;
+        feedbackTextType.GetComponent<RectTransform>().localScale = Vector3.zero;
     }
 }

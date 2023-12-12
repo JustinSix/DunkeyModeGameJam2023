@@ -32,8 +32,8 @@ public class QTEController : MonoBehaviour
     {
         if (Input.GetKeyDown(activeKeyCode))
         {
-            // QTE successful
-            Debug.Log("QTE Successful!");
+            SoundManager.Instance.SpawnSound(SoundManager.SoundName.WIN_QTE);
+
             succesfulQTE++;
 
             ResetQTE();
@@ -65,7 +65,8 @@ public class QTEController : MonoBehaviour
 
     private void FailedQTE()
     {
-        //QTECanvasO.SetActive(false);
+        SoundManager.Instance.SpawnSound(SoundManager.SoundName.FAIL_QTE1);
+
         Debug.Log("QTE Failed!");
         qteLeft--;
         ResetQTE();

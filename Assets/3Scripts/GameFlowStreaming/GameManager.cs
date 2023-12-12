@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         state = State.PickingActivity;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
     private void Start()
     {

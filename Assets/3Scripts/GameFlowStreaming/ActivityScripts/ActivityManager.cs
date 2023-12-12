@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using DG.Tweening;
+using TMPro;
 
 public  class ActivityManager : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public  class ActivityManager : MonoBehaviour
     [SerializeField] private GameObject vapingVCameraO;
     [SerializeField] private GameObject pianoVCameraO;
     [SerializeField] private GameObject danceVCameraO;
+
+    [Header("VisualFeedback")]
+    [SerializeField] private TMP_Text modeText;
 
     private bool activityResult = false;
     public enum ActivityName
@@ -167,12 +171,16 @@ public  class ActivityManager : MonoBehaviour
 
             case "PlayPiano":
                 Debug.Log("PlayPiano");
+                SoundManager.Instance.PauseMusic();
+                SoundManager.Instance.SpawnSound(SoundManager.SoundName.GOODPIANOPLAY);
                 StreamManager.Instance.activityEarnedPoints = 1000;
                 StartStreamRoomActivity(piano);
                 break;
 
             case "HotTub":
                 Debug.Log("HotTub");
+                SoundManager.Instance.PauseMusic();
+                SoundManager.Instance.SpawnSound(SoundManager.SoundName.SONGHOTTUB);
                 StreamManager.Instance.activityEarnedPoints = 1000;
                 StartStreamRoomActivity(hotTub);
                 break;
@@ -183,6 +191,8 @@ public  class ActivityManager : MonoBehaviour
 
             case "Dance":
                 Debug.Log("Dance");
+                SoundManager.Instance.PauseMusic();
+                SoundManager.Instance.SpawnSound(SoundManager.SoundName.SONGDANCE);
                 StreamManager.Instance.activityEarnedPoints = 1000;
                 StartStreamRoomActivity(dance);
                 break;
@@ -216,16 +226,28 @@ public  class ActivityManager : MonoBehaviour
     private void StartStreamRoomActivity(GameObject activityToEnable)
     {
         activityToEnable.SetActive(true);
-        StartCoroutine(WaitForActivityCinemachineTransition());
+        StartCoroutine(WaitForActivityCinemachineTransition(activityToEnable.name));
         StartCoroutine(DisableStreamActivityAfter(activityToEnable));
     }
 
-    IEnumerator WaitForActivityCinemachineTransition()
+    IEnumerator WaitForActivityCinemachineTransition(string activityName)
     {
         do
         {
             yield return null;
         } while (GameManager.Instance.cameraBrain.IsBlending);
+
+        PlayCorrectStreamerRoomActivityModeSound(activityName);
+
+        modeText.text = activityName + " MODE";
+        RectTransform modeTextRectTransform = modeText.GetComponent<RectTransform>();
+        modeTextRectTransform.DOScale(1, .5f);
+        StartCoroutine(LerpAnchoredPosition(modeTextRectTransform, new Vector2(0, 435), .4f));
+
+        yield return new WaitForSeconds(1f);
+        modeTextRectTransform.localScale = Vector3.zero;
+        modeTextRectTransform.anchoredPosition = Vector3.zero;
+
         qteController.InitiateQTE();
     }
     IEnumerator DisableStreamActivityAfter(GameObject activityToDisable)
@@ -233,6 +255,7 @@ public  class ActivityManager : MonoBehaviour
         yield return new WaitForSeconds(10f);
         activityToDisable.SetActive(false);
         qteController.EndQTE();
+        SoundManager.Instance.ResumeMusic();
         GameManager.Instance.ChangeToStreaming();
     }
 
@@ -250,5 +273,44 @@ public  class ActivityManager : MonoBehaviour
             array[i] = array[j];
             array[j] = temp;
         }
+    }
+
+    private void PlayCorrectStreamerRoomActivityModeSound(string mode)
+    {
+        switch (mode)
+        {
+            case "PIANO":
+                SoundManager.Instance.SpawnSound(SoundManager.SoundName.PIANOMODE);
+                break;
+            case "HOT TUB":
+                SoundManager.Instance.SpawnSound(SoundManager.SoundName.HOTTUBMODE);
+                break;
+            case "DANCE":
+                SoundManager.Instance.SpawnSound(SoundManager.SoundName.DANCEMODE);
+                break;
+            case "VAPE":
+                SoundManager.Instance.SpawnSound(SoundManager.SoundName.VAPEMODE);
+                break;
+            default:
+                Debug.LogError("no mode check acvitty manager");
+                break;
+        }
+    }
+    IEnumerator LerpAnchoredPosition(RectTransform rectTransform, Vector2 targetPos, float duration)
+    {
+        float elapsedTime = 0f;
+        Vector2 startPos = rectTransform.anchoredPosition;
+
+        while (elapsedTime < duration)
+        {
+            rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetPos, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final position is set
+        rectTransform.anchoredPosition = targetPos;
+
+        Debug.Log("Lerping anchoredPosition complete!");
     }
 }
