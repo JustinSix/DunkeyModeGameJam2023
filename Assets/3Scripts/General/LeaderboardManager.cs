@@ -98,7 +98,7 @@ public class LeaderboardManager : MonoBehaviour
     public void AddPlayerScore(string playerName, float playerScore, string creatorName)
     {
         AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
-        //await UpdatePlayerName(playerName);
+
         AddScoreWithMetadata(playerScore, creatorName);
     }
     async Task UpdatePlayerName(string playerName)

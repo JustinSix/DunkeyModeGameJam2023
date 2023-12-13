@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,7 +24,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] destinyObjects;
     [SerializeField] private GameObject[] hasanObjects;
     [SerializeField] private TMP_Text streamerText;
-
+    [Header("Game over/Stream Over Objects")]
+    [SerializeField] private GameObject streamEndCanvas;
+    [SerializeField] private TMP_Text viewersGainedText;
+    [SerializeField] private TMP_Text followersGainedText;
+    [SerializeField] private TMP_Text contributeScoreButtonText;
+    [SerializeField] private Button contributeScoreButton;
+    [SerializeField] private Button mainMenuButton;
     float pickingActivityTimer;
     private string chosenStreamer;
     private static bool loadedOnce = false;
@@ -98,6 +106,27 @@ public class GameManager : MonoBehaviour
             state = State.StartStream;
         }
 
+        if (LeaderboardManager.Instance != null)
+        {
+            contributeScoreButton.onClick.AddListener(() =>
+            {
+                int followersGained = StreamManager.Instance.GetFollowers() - 10000;
+
+                LeaderboardManager.Instance.AddPlayerScore("generic player name", followersGained, chosenStreamer);
+
+                contributeScoreButton.gameObject.SetActive(false);
+            });
+            contributeScoreButtonText.text = "Contribute Score to " + chosenStreamer;
+        }
+        else
+        {
+            contributeScoreButtonText.text = "error";
+            Debug.LogError("leaderboard manager null");
+        }
+        mainMenuButton.onClick.AddListener(() =>
+        {
+            Loader.Load(Loader.Scene.MainMenu);
+        });
     }
     // Update is called once per frame
     void Update()
@@ -147,5 +176,17 @@ public class GameManager : MonoBehaviour
     public string GetCurrentStreamer()
     {
         return chosenStreamer;
+    }
+
+    public void EndGame()
+    {
+        streamEndCanvas.gameObject.SetActive(true);
+        int viewersGained = StreamManager.Instance.GetViewers() - 1000;
+        viewersGainedText.text = viewersGained.ToString() + " viewers gained!";
+
+        int followersGained = StreamManager.Instance.GetFollowers() - 10000;
+        followersGainedText.text = followersGained.ToString() + " followers gained!";
+
+        state = State.GameOver;
     }
 }

@@ -31,6 +31,8 @@ public  class ActivityManager : MonoBehaviour
     [SerializeField] private TMP_Text modeText;
 
     private bool activityResult = false;
+    private int activitiesCompleted = 0;
+    private int maxActivities = 2;
     public enum ActivityName
     {
         MarioKurt,
@@ -73,7 +75,8 @@ public  class ActivityManager : MonoBehaviour
         {
             activityResult = true;
         }
-
+        //load pref of activities completed
+        activitiesCompleted = PlayerPrefs.GetInt("ActivtiesCompleted",0);
     }
 
     //shift camera to screen
@@ -159,17 +162,17 @@ public  class ActivityManager : MonoBehaviour
         switch (activityName)
         {
             case "MarioKurt":
-                Debug.Log("MarioKurt");
+                ActivtyCompleted(4);
                 Loader.Load(Loader.Scene.MarioKurt); 
                 break;
 
             case "FullGuys":
-                Debug.Log("FullGuys");
+                ActivtyCompleted(4);
                 Loader.Load(Loader.Scene.FullGuysGame);
                 break;
 
             case "PlayPiano":
-                Debug.Log("PlayPiano");
+                ActivtyCompleted(1);
                 SoundManager.Instance.PauseMusic();
                 SoundManager.Instance.SpawnSound(SoundManager.SoundName.GOODPIANOPLAY);
                 StreamManager.Instance.activityEarnedPoints = 1000;
@@ -177,7 +180,7 @@ public  class ActivityManager : MonoBehaviour
                 break;
 
             case "HotTub":
-                Debug.Log("HotTub");
+                ActivtyCompleted(1);
                 SoundManager.Instance.PauseMusic();
                 SoundManager.Instance.SpawnSound(SoundManager.SoundName.SONGHOTTUB);
                 StreamManager.Instance.activityEarnedPoints = 1000;
@@ -189,7 +192,7 @@ public  class ActivityManager : MonoBehaviour
             //    break;
 
             case "Dance":
-                Debug.Log("Dance");
+                ActivtyCompleted(1);
                 SoundManager.Instance.PauseMusic();
                 SoundManager.Instance.SpawnSound(SoundManager.SoundName.SONGDANCE);
                 StreamManager.Instance.activityEarnedPoints = 1000;
@@ -201,19 +204,21 @@ public  class ActivityManager : MonoBehaviour
             //    break;
 
             case "Vape":
-                Debug.Log("Vape");
+                ActivtyCompleted(1);
                 StreamManager.Instance.activityEarnedPoints = 1000;
                 StartStreamRoomActivity(vaping);
                 break;
 
             case "Gamble":
-                Debug.Log("Gamble");
+                ActivtyCompleted(2);
                 Loader.Load(Loader.Scene.GambleGame);
                 break;
             case "FactoryOH":
+                ActivtyCompleted(1);
                 Loader.Load(Loader.Scene.FactoryOH);
                 break;
             case "AnimalWell":
+                ActivtyCompleted(1);
                 Loader.Load(Loader.Scene.AnimalWell);
                 break;
             default:
@@ -311,5 +316,22 @@ public  class ActivityManager : MonoBehaviour
         rectTransform.anchoredPosition = targetPos;
 
         Debug.Log("Lerping anchoredPosition complete!");
+    }
+
+    private void ActivtyCompleted(int activityWeightToAdd)
+    {
+        activitiesCompleted += activityWeightToAdd;
+        PlayerPrefs.SetInt("ActivtiesCompleted", activitiesCompleted);
+    }
+    public bool GetIfActivitiesCompleted()
+    {
+        if(activitiesCompleted >= maxActivities)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -73,7 +73,7 @@ public class StreamManager : MonoBehaviour
         {
             NegativeReaction();
         }
-        
+
         streamingWebVCameraO.SetActive(true);
     }
 
@@ -110,13 +110,13 @@ public class StreamManager : MonoBehaviour
 
         currentFollowers -= GetFollowerChanges(false);
 
-        if(currentFollowers < 0)
+        if (currentFollowers < 0)
         {
             currentFollowers = 0;
         }
-        if(currentViewers < 0)
+        if (currentViewers < 0)
         {
-            currentViewers = 0; 
+            currentViewers = 0;
         }
         PlayerPrefs.SetInt("CurrentViewers", currentViewers);
         PlayerPrefs.SetInt("CurrentFollowers", currentFollowers);
@@ -206,7 +206,7 @@ public class StreamManager : MonoBehaviour
             totalViewers = Mathf.RoundToInt(activityEarnedPoints / multiplier);
         }
         Debug.Log("total viewers after calculation: " + totalViewers + "\nIs positive: " + isPositive);
-        return totalViewers + UnityEngine.Random.Range(0,10);
+        return totalViewers + UnityEngine.Random.Range(0, 10);
     }
     private float GetMultiplierByStreamer(Streamer streamer)
     {
@@ -292,7 +292,7 @@ public class StreamManager : MonoBehaviour
         feedbackTextNumber.GetComponent<RectTransform>().localScale = Vector3.zero;
         feedbackTextType.GetComponent<RectTransform>().localScale = Vector3.zero;
 
-        if(feedbackPositive)
+        if (feedbackPositive)
         {
             feedbackTextNumber.text = "+";
         }
@@ -310,5 +310,21 @@ public class StreamManager : MonoBehaviour
         yield return new WaitForSeconds(1.1f);
         feedbackTextNumber.GetComponent<RectTransform>().localScale = Vector3.zero;
         feedbackTextType.GetComponent<RectTransform>().localScale = Vector3.zero;
+
+        if (ActivityManager.Instance.GetIfActivitiesCompleted())
+        {
+            //end game
+            Debug.Log("Ended Game");
+            streamViewCanvas.SetActive(false);
+            GameManager.Instance.EndGame();
+        }
+    }
+    public int GetFollowers()
+    {
+        return currentFollowers;
+    }
+    public int GetViewers()
+    {
+        return currentViewers;
     }
 }
