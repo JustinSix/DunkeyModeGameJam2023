@@ -4,26 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/2Scenes/MainMenu.unity
-    guid: fe597b9964e4efe46948b3eb859840ae
-  - enabled: 1
-    path: Assets/2Scenes/FullGuysGame.unity
-    guid: 3d916482e3941954fb3c30447df9a980
-  - enabled: 1
-    path: Assets/2Scenes/GambleGame.unity
-    guid: 434767d4f33e6c345a537d6aa731d47d
-  - enabled: 1
-    path: Assets/2Scenes/StreamerScene.unity
-    guid: 718361d8fde869948a4520ed8f0cc599
-  - enabled: 1
-    path: Assets/2Scenes/MarioKurt.unity
-    guid: e107dbd53c5088141b9598041980b352
-  - enabled: 1
-    path: Assets/2Scenes/FactoryOH.unity
-    guid: 800a0e756436e2b4d9b42056f69a383e
-  - enabled: 1
-    path: Assets/2Scenes/AnimalWell.unity
-    guid: a10a392f67efffb4b9a85fa3afe7d524
+  m_Scenes: []
   m_configObjects: {}
