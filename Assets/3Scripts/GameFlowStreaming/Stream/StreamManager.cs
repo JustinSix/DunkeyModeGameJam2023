@@ -157,6 +157,9 @@ public class StreamManager : MonoBehaviour
             case "Destiny":
                 multiplier = GetMultiplierByStreamer(destinySO);
                 break;
+            case "Hasan":
+                multiplier = GetMultiplierByStreamer(hasanSO);
+                break;
         }
 
         if (isPositive)
@@ -194,6 +197,9 @@ public class StreamManager : MonoBehaviour
                 break;
             case "Destiny":
                 multiplier = GetMultiplierByStreamer(destinySO);
+                break;
+            case "Hasan":
+                multiplier = GetMultiplierByStreamer(hasanSO);
                 break;
         }
 

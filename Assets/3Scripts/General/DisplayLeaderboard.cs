@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 
 public class DisplayLeaderboard : MonoBehaviour
 {
+    [SerializeField] PodiumPeopleManager podiumPeopleManager;
     [SerializeField] TMP_Text top10Text;
     [SerializeField] TMP_Text loadingText;
 
@@ -61,8 +62,13 @@ public class DisplayLeaderboard : MonoBehaviour
         // Assign scores to separate string variables
         string xqcScore = combinedScoresByCreator.ContainsKey("XQC") ? combinedScoresByCreator["XQC"].ToString("F") : "0";
         string destinyScore = combinedScoresByCreator.ContainsKey("Destiny") ? combinedScoresByCreator["Destiny"].ToString("F") : "0";
+        string h3h3Score = combinedScoresByCreator.ContainsKey("H3H3") ? combinedScoresByCreator["H3H3"].ToString("F") : "0";
+        string hasanScore = combinedScoresByCreator.ContainsKey("Hasan") ? combinedScoresByCreator["Hasan"].ToString("F") : "0";
+        string amouranthScore = combinedScoresByCreator.ContainsKey("Amouranth") ? combinedScoresByCreator["Amouranth"].ToString("F") : "0";
         //string h3h3Score = combinedScoresByCreator.ContainsKey("H3H3") ? combinedScoresByCreator["H3H3"].ToString("F") : "0";
 
+        //string destinyScoreText, string xqcScoreText, string hasanScoreText, string amouranthScoreText, string h3h3Score
+        podiumPeopleManager.TakeScoresAndOrganizeStreamersAndScores(destinyScore, xqcScore, hasanScore, amouranthScore, h3h3Score);
         // Display the combined scores
         foreach (var kvp in sortedCreators)
         {

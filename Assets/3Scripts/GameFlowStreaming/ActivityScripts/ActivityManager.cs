@@ -32,7 +32,7 @@ public  class ActivityManager : MonoBehaviour
 
     private bool activityResult = false;
     private int activitiesCompleted = 0;
-    private int maxActivities = 2;
+    private int maxActivities = 8;
     public enum ActivityName
     {
         MarioKurt,
