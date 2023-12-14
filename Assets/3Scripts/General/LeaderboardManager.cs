@@ -85,7 +85,9 @@ public class LeaderboardManager : MonoBehaviour
     public async void GetScores()
     {
         var scoresResponse = await LeaderboardsService.Instance
-            .GetScoresAsync(leaderboardId);
+            .GetScoresAsync(
+            leaderboardId,
+            new GetScoresOptions { IncludeMetadata = true, Limit = 1000});
         OnLeaderboardPulled?.Invoke(this, new OnLeaderboardPulledEventargs
         {
             scores = JsonConvert.SerializeObject(scoresResponse)

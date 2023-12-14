@@ -18,7 +18,6 @@ public class ClickObjectsManager : MonoBehaviour
         // Check for mouse click
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("mouse button down registered");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -31,7 +30,6 @@ public class ClickObjectsManager : MonoBehaviour
                 string chosenStreamer = hit.collider.name;
                 mainMenuS.ChooseStreamer(hit.collider.name);
                 SpotlightSelectedStreamer(chosenStreamer);
-                Debug.Log(chosenStreamer);
             }
         }
     }

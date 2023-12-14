@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour
 
     public void ChooseStreamer(string streamerClickedOnName)
     {
-        Debug.Log("Chosen streamer: " + streamerClickedOnName);
+        //Debug.Log("Chosen streamer: " + streamerClickedOnName);
         PlayerPrefs.SetString("ChosenStreamer", streamerClickedOnName);
     }
 
