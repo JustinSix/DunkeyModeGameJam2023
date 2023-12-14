@@ -8,8 +8,6 @@ using System.Text.RegularExpressions;
 public class DisplayLeaderboard : MonoBehaviour
 {
     [SerializeField] PodiumPeopleManager podiumPeopleManager;
-    [SerializeField] TMP_Text top10Text;
-    [SerializeField] TMP_Text loadingText;
 
     // Start is called before the first frame update
     void Start()
@@ -67,16 +65,8 @@ public class DisplayLeaderboard : MonoBehaviour
         string amouranthScore = combinedScoresByCreator.ContainsKey("Amouranth") ? combinedScoresByCreator["Amouranth"].ToString("F") : "0";
         //string h3h3Score = combinedScoresByCreator.ContainsKey("H3H3") ? combinedScoresByCreator["H3H3"].ToString("F") : "0";
 
-        //string destinyScoreText, string xqcScoreText, string hasanScoreText, string amouranthScoreText, string h3h3Score
+        //show scores above heads and sort streamers positions
         podiumPeopleManager.TakeScoresAndOrganizeStreamersAndScores(destinyScore, xqcScore, hasanScore, amouranthScore, h3h3Score);
-        // Display the combined scores
-        foreach (var kvp in sortedCreators)
-        {
-            top10Text.text += $"\n{kvp.Key}: {kvp.Value.ToString("F")} combined score!";
-        }
-
-        top10Text.gameObject.SetActive(true);
-        loadingText.gameObject.SetActive(false);
     }
 
     private string GetCreatorFromMetadata(string metadata)
