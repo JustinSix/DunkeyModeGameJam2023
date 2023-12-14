@@ -16,6 +16,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip victorySound;
     [SerializeField] private AudioClip losingSound;
     [SerializeField] private AudioClip streamerSelectedSound;
+    [SerializeField] private AudioClip marioKurtVictorySound;
     [Header("Audio Clips for MODES")]
     [SerializeField] private AudioClip danceMode;
     [SerializeField] private AudioClip vapeMode;
@@ -46,6 +47,7 @@ public class SoundManager : MonoBehaviour
         SONGHOTTUB,
         SONGDANCE,
         SELECTEDSTREAMER,
+        MARIOKURTVICTORY,
     }
 
     private void Awake()
@@ -126,6 +128,10 @@ public class SoundManager : MonoBehaviour
             case SoundName.SELECTEDSTREAMER:
                 clipToPlay = streamerSelectedSound;
                 volume = 0.15f;
+                break;
+            case SoundName.MARIOKURTVICTORY:
+                clipToPlay = marioKurtVictorySound;
+                volume = 0.1f;
                 break;
             default:
                 clipToPlay = null;

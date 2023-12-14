@@ -7,14 +7,25 @@ using TMPro;
 public class MarioKurtManager : MonoBehaviour
 {
     [SerializeField] TMP_Text modeText;
-
+    [Header("Kart Peoples")]
     [SerializeField] private GameObject xqcObject;
     [SerializeField] private GameObject ethanObject;
     [SerializeField] private GameObject amouranthObject;
     [SerializeField] private GameObject destinyObject;
     [SerializeField] private GameObject hasanObject;
     [SerializeField] private int activityPointsValue;
+    
+    [Header("Timer Stuff")]
+    public TMP_Text timerText;
+    private float currentTime = 0.0f;
+    public bool gameEnded = false;
+    [Header("Reset Game Stuff")]
+    [SerializeField] private Transform kartTransform;
+    [SerializeField] private Transform cameraTransform;
+    [SerializeField] private Transform startingKartTransform;
+    [SerializeField] private Transform startingCameraTransform;
     private string chosenStreamer;
+
     private void Start()
     {
         chosenStreamer = PlayerPrefs.GetString("ChosenStreamer", "XQC");
@@ -47,6 +58,35 @@ public class MarioKurtManager : MonoBehaviour
         StartCoroutine(LerpAnchoredPosition(modeTextRectTransform, new Vector2(0, 435), .4f));
     }
 
+    private void Update()
+    {
+        if (!gameEnded)
+        {
+            currentTime += Time.deltaTime;
+            timerText.text = FormatTime(currentTime);
+        }
+        if (Input.GetKey(KeyCode.R))
+        {
+            gameEnded = false;
+            currentTime = 0;
+
+            kartTransform.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+            kartTransform.position = startingKartTransform.position;
+            kartTransform.rotation = startingKartTransform.rotation;
+
+            cameraTransform.position = startingCameraTransform.position;
+            cameraTransform.rotation = startingCameraTransform.rotation;
+        }
+
+    }
+    string FormatTime(float time)
+    {
+        // Format time as minutes and seconds
+        int minutes = Mathf.FloorToInt(time / 60F);
+        int seconds = Mathf.FloorToInt(time % 60F);
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
     public void CalculateResults(bool won)
     {
         if(won)

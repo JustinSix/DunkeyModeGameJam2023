@@ -1,12 +1,14 @@
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using System.Collections;
 public class QTEController : MonoBehaviour
 {
     [SerializeField] private GameObject QTECanvasO;
     [SerializeField] QTEKeyManager[] qteKeys;
     [SerializeField] KeyCode[] qteKeyCodesArray;
-
+    [SerializeField] Sprite failedKeySprite;
+    [SerializeField] Sprite succesfulKeySprite;
     private bool qteActive = false;
 
     private int totalQTE = 0;
@@ -35,6 +37,8 @@ public class QTEController : MonoBehaviour
             SoundManager.Instance.SpawnSound(SoundManager.SoundName.WIN_QTE);
 
             succesfulQTE++;
+
+            activeKeyM.outerKeyImage.sprite = succesfulKeySprite;
 
             ResetQTE();
 
@@ -69,6 +73,9 @@ public class QTEController : MonoBehaviour
 
         Debug.Log("QTE Failed!");
         qteLeft--;
+
+        activeKeyM.outerKeyImage.sprite = failedKeySprite;
+
         ResetQTE();
         StartQTE();
     }
@@ -88,7 +95,7 @@ public class QTEController : MonoBehaviour
 
     private void ResetQTE()
     {
-        activeKeyM.keyObject.SetActive(false);
+        activeKeyM.FadeKeyOut();
         timer = 0f;
     }
 
@@ -104,12 +111,14 @@ public class QTEController : MonoBehaviour
         activeKeyCode = qteKeyCodesArray[rNumKC];
 
         //pick random time for QTE
-        float rFloat = UnityEngine.Random.Range(.4f, 1.5f);
+        float rFloat = UnityEngine.Random.Range(.5f, 1.4f);
         qteDuration = rFloat;
 
         //assining fill Image
         activeKeyTimerImage = activeKeyM.fillTimerImage;
         activeKeyM.keyObject.SetActive(true);
+        activeKeyM.FadeInKey();
+
         Debug.Log("KeyCode: " + activeKeyCode + "KeyCode to string: " + activeKeyCode.ToString());
         activeKeyM.qteKeyText.text = activeKeyCode.ToString();
         //qte to active
@@ -133,4 +142,6 @@ public class QTEController : MonoBehaviour
         succesfulQTE = 0;
         qteActive = false;
     }
+
+
 }

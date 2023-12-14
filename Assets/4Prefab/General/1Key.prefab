@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -149,8 +149,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -337,4 +337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   qteKeyText: {fileID: 4080747217215750154}
   fillTimerImage: {fileID: 7884839104138482868}
+  outerKeyImage: {fileID: 8882236795984948260}
   keyObject: {fileID: 3764318649102836357}
+  defaultOuterKeySprite: {fileID: 21300000, guid: 8a2180c85afdd5c4ebc5f17c85f2ccb9,
+    type: 3}
