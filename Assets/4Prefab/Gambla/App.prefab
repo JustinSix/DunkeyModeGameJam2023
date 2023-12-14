@@ -217,7 +217,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1412,6 +1412,7 @@ MonoBehaviour:
   minRunTime: 3.22
   maxRunTime: 5.67
   megaWin: {fileID: 1265930216085684788}
+  loseImage: {fileID: 0}
   goldHolder: {fileID: 651246136190183819}
   atlas: {fileID: 4343727234628468602, guid: c01577ea98bc37a4fb969b96dc2915f1, type: 2}
   currentBet: 0

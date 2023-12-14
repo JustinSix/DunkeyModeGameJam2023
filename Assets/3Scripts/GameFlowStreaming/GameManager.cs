@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text contributeScoreButtonText;
     [SerializeField] private Button contributeScoreButton;
     [SerializeField] private Button mainMenuButton;
+    [SerializeField] private Button howwemadeitButton;
     float pickingActivityTimer;
     private string chosenStreamer;
     private static bool loadedOnce = false;
@@ -126,6 +127,10 @@ public class GameManager : MonoBehaviour
         mainMenuButton.onClick.AddListener(() =>
         {
             Loader.Load(Loader.Scene.MainMenu);
+        });
+        howwemadeitButton.onClick.AddListener(() =>
+        {
+            Application.OpenURL("https://www.youtube.com/playlist?list=PLN2-qKAB0Md0jd0plQ2UVMc0UngSfxAd6");
         });
     }
     // Update is called once per frame

@@ -271,3 +271,5 @@ MonoBehaviour:
   activityButton: {fileID: 1090947809242100320}
   activityText: {fileID: 7311235602338773068}
   activityImage: {fileID: 406765618588511798}
+  activityTitle: 
+  activityName: 0
