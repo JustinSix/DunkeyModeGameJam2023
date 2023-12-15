@@ -32,26 +32,36 @@ public class QTEController : MonoBehaviour
 
     private void HandleQTEInput()
     {
-        if (Input.GetKeyDown(activeKeyCode))
+        // Check if any key is pressed down
+        if (Input.anyKeyDown && !Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1) && !Input.GetMouseButtonDown(2))
         {
-            SoundManager.Instance.SpawnSound(SoundManager.SoundName.WIN_QTE);
-
-            succesfulQTE++;
-
-            activeKeyM.outerKeyImage.sprite = succesfulKeySprite;
-
-            ResetQTE();
-
-            qteLeft--;
-            if(qteLeft <= 0)
+            if (Input.GetKeyDown(activeKeyCode))
             {
-                qteActive = false;
+                SoundManager.Instance.SpawnSound(SoundManager.SoundName.WIN_QTE);
+
+                succesfulQTE++;
+
+                activeKeyM.outerKeyImage.sprite = succesfulKeySprite;
+
+                ResetQTE();
+
+                qteLeft--;
+                if (qteLeft <= 0)
+                {
+                    qteActive = false;
+                }
+                else
+                {
+                    StartQTE();
+                }
             }
+            //spam clicked wrong keycode
             else
             {
-                StartQTE();
+                FailedQTE();
             }
         }
+       
     }
 
     private void UpdateTimer()

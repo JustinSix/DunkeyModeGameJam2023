@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class ClickObjectsManager : MonoBehaviour
 {
-    // Event to register for when the object is clicked
-    public event EventHandler Clicked;
     [SerializeField] MainMenu mainMenuS;
     [SerializeField] private GameObject xqcSpotlight;
     [SerializeField] private GameObject amouranthSpotlight;

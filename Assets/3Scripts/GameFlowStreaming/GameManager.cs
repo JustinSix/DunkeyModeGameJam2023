@@ -193,5 +193,6 @@ public class GameManager : MonoBehaviour
         followersGainedText.text = followersGained.ToString() + " followers gained!";
 
         state = State.GameOver;
+        PlayerPrefs.DeleteAll();
     }
 }
