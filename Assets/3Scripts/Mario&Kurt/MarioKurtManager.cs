@@ -13,6 +13,7 @@ public class MarioKurtManager : MonoBehaviour
     [SerializeField] private GameObject amouranthObject;
     [SerializeField] private GameObject destinyObject;
     [SerializeField] private GameObject hasanObject;
+    [SerializeField] private GameObject pirateObject;
     [SerializeField] private int activityPointsValue;
     
     [Header("Timer Stuff")]
@@ -45,6 +46,9 @@ public class MarioKurtManager : MonoBehaviour
                 break;
             case "Hasan":
                 hasanObject.SetActive(true);
+                break;
+            case "PirateSoftware":
+                pirateObject.SetActive(true);
                 break;
             default:
                 xqcObject.SetActive(true);

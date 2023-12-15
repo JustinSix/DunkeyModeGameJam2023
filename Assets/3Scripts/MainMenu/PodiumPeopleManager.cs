@@ -9,6 +9,7 @@ public class PodiumPeopleManager : MonoBehaviour
     [SerializeField] private Transform destinyTransform;
     [SerializeField] private Transform amouranthTransform;
     [SerializeField] private Transform hasanTransform;
+    [SerializeField] private Transform pirateTransform;
 
     [Header("Placements")]
     [SerializeField] private Transform firstPlaceTransform;
@@ -16,6 +17,7 @@ public class PodiumPeopleManager : MonoBehaviour
     [SerializeField] private Transform thirdPlaceTransform;
     [SerializeField] private Transform fourthPlaceTransform;
     [SerializeField] private Transform fifthPlaceTransform;
+    [SerializeField] private Transform sixthPlaceTransform;
 
     [Header("Streamer Score Texts")]
     [SerializeField] private TMP_Text destinyScoreTMP;
@@ -23,8 +25,9 @@ public class PodiumPeopleManager : MonoBehaviour
     [SerializeField] private TMP_Text hasanScoreTMP;
     [SerializeField] private TMP_Text amouranthScoreTMP;
     [SerializeField] private TMP_Text h3h3ScoreTMP;
+    [SerializeField] private TMP_Text pirateScoreTMP;
 
-    public void TakeScoresAndOrganizeStreamersAndScores(string destinyScoreText, string xqcScoreText, string hasanScoreText, string amouranthScoreText, string h3h3ScoreText)
+    public void TakeScoresAndOrganizeStreamersAndScores(string destinyScoreText, string xqcScoreText, string hasanScoreText, string amouranthScoreText, string h3h3ScoreText, string pirateSoftwareText)
     {
         //checking for null or empty
         destinyScoreText = string.IsNullOrEmpty(destinyScoreText) ? "0" : destinyScoreText;
@@ -32,6 +35,7 @@ public class PodiumPeopleManager : MonoBehaviour
         hasanScoreText = string.IsNullOrEmpty(hasanScoreText) ? "0" : hasanScoreText;
         amouranthScoreText = string.IsNullOrEmpty(amouranthScoreText) ? "0" : amouranthScoreText;
         h3h3ScoreText = string.IsNullOrEmpty(h3h3ScoreText) ? "0" : h3h3ScoreText;
+        pirateSoftwareText = string.IsNullOrEmpty(pirateSoftwareText) ? "0" : pirateSoftwareText;
 
         // Assign scores to the respective TMP_Text variables
         destinyScoreTMP.text = destinyScoreText;
@@ -39,6 +43,7 @@ public class PodiumPeopleManager : MonoBehaviour
         hasanScoreTMP.text = hasanScoreText;
         amouranthScoreTMP.text = amouranthScoreText;
         h3h3ScoreTMP.text = h3h3ScoreText;
+        pirateScoreTMP.text = pirateSoftwareText;
 
         // Create an array of tuples to store streamer names and scores
         (string, string)[] scoresAndStreamers = {
@@ -46,7 +51,8 @@ public class PodiumPeopleManager : MonoBehaviour
             ("XQC", xqcScoreText),
             ("Hasan", hasanScoreText),
             ("Amouranth", amouranthScoreText),
-            ("H3H3", h3h3ScoreText)
+            ("H3H3", h3h3ScoreText),
+            ("PirateSoftware", pirateSoftwareText),
         };
 
         // Convert score strings to integers and sort by scores
@@ -75,6 +81,7 @@ public class PodiumPeopleManager : MonoBehaviour
         MoveStreamerToPlace(scoresAndStreamers[2].Item1, thirdPlaceTransform);
         MoveStreamerToPlace(scoresAndStreamers[3].Item1, fourthPlaceTransform);
         MoveStreamerToPlace(scoresAndStreamers[4].Item1, fifthPlaceTransform);
+        MoveStreamerToPlace(scoresAndStreamers[5].Item1, sixthPlaceTransform);
     }
 
     private void MoveStreamerToPlace(string streamerName, Transform targetTransform)
@@ -98,6 +105,9 @@ public class PodiumPeopleManager : MonoBehaviour
                 break;
             case "H3H3":
                 ethanTransform.position = targetTransform.position;
+                break;
+            case "PirateSoftware":
+                pirateTransform.position = targetTransform.position;
                 break;
         }
     }

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] ethanObjects;
     [SerializeField] private GameObject[] destinyObjects;
     [SerializeField] private GameObject[] hasanObjects;
+    [SerializeField] private GameObject[] pirateObjects;
     [SerializeField] private TMP_Text streamerText;
     [Header("Game over/Stream Over Objects")]
     [SerializeField] private GameObject streamEndCanvas;
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour
                 }
                 streamerText.text = "Amouranth";
                 break;
-            case "EthanH3H3":
+            case "H3H3":
                 foreach (GameObject obj in ethanObjects)
                 {
                     obj.SetActive(true);
@@ -93,6 +94,13 @@ public class GameManager : MonoBehaviour
                     obj.SetActive(true);
                 }
                 streamerText.text = "Hasan";
+                break;
+            case "PirateSoftware":
+                foreach (GameObject obj in pirateObjects)
+                {
+                    obj.SetActive(true);
+                }
+                streamerText.text = "PirateSoftware";
                 break;
         }
         if (!loadedOnce)

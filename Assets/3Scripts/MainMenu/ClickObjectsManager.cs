@@ -11,6 +11,7 @@ public class ClickObjectsManager : MonoBehaviour
     [SerializeField] private GameObject destinySpotlight;
     [SerializeField] private GameObject ethanSpotlight;
     [SerializeField] private GameObject hasanSpotlight;
+    [SerializeField] private GameObject pirateSpotlight;
     private void Update()
     {
         // Check for mouse click
@@ -44,14 +45,16 @@ public class ClickObjectsManager : MonoBehaviour
                 xqcSpotlight.SetActive(false);
                 destinySpotlight.SetActive(false);
                 hasanSpotlight.SetActive(false);
+                pirateSpotlight.SetActive(false);
                 break;
-            case "EthanH3H3":
+            case "H3H3":
                 ethanSpotlight.SetActive(true);
 
                 amouranthSpotlight.SetActive(false);
                 xqcSpotlight.SetActive(false);
                 destinySpotlight.SetActive(false);
                 hasanSpotlight.SetActive(false);
+                pirateSpotlight.SetActive(false);
                 break;
             case "XQC":
                 xqcSpotlight.SetActive(true);
@@ -60,6 +63,7 @@ public class ClickObjectsManager : MonoBehaviour
                 amouranthSpotlight.SetActive(false);
                 destinySpotlight.SetActive(false);
                 hasanSpotlight.SetActive(false);
+                pirateSpotlight.SetActive(false);
                 break;
             case "Destiny":
                 destinySpotlight.SetActive(true);
@@ -68,6 +72,7 @@ public class ClickObjectsManager : MonoBehaviour
                 xqcSpotlight.SetActive(false);
                 amouranthSpotlight.SetActive(false);
                 hasanSpotlight.SetActive(false);
+                pirateSpotlight.SetActive(false);
                 break;
             case "Hasan":
                 hasanSpotlight.SetActive(true);
@@ -76,6 +81,16 @@ public class ClickObjectsManager : MonoBehaviour
                 xqcSpotlight.SetActive(false);
                 amouranthSpotlight.SetActive(false);
                 destinySpotlight.SetActive(false);
+                pirateSpotlight.SetActive(false);
+                break;
+            case "PirateSoftware":
+                pirateSpotlight.SetActive(true);
+
+                ethanSpotlight.SetActive(false);
+                xqcSpotlight.SetActive(false);
+                destinySpotlight.SetActive(false);
+                hasanSpotlight.SetActive(false);
+                amouranthSpotlight.SetActive(false);
                 break;
 
         }

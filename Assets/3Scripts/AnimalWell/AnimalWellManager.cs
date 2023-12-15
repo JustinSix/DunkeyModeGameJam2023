@@ -11,6 +11,7 @@ public class AnimalWellManager : MonoBehaviour
     [SerializeField] private GameObject amouranthObject;
     [SerializeField] private GameObject destinyObject;
     [SerializeField] private GameObject hasanObject;
+    [SerializeField] private GameObject pirateObject;
     private string chosenStreamer;
     private void Start()
     {
@@ -31,6 +32,9 @@ public class AnimalWellManager : MonoBehaviour
                 break;
             case "Hasan":
                 hasanObject.SetActive(true);
+                break;
+            case "PirateSoftware":
+                pirateObject.SetActive(true);
                 break;
             default:
                 xqcObject.SetActive(true);

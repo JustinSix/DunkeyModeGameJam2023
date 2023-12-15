@@ -63,10 +63,10 @@ public class DisplayLeaderboard : MonoBehaviour
         string h3h3Score = combinedScoresByCreator.ContainsKey("H3H3") ? combinedScoresByCreator["H3H3"].ToString("F") : "0";
         string hasanScore = combinedScoresByCreator.ContainsKey("Hasan") ? combinedScoresByCreator["Hasan"].ToString("F") : "0";
         string amouranthScore = combinedScoresByCreator.ContainsKey("Amouranth") ? combinedScoresByCreator["Amouranth"].ToString("F") : "0";
-        //string h3h3Score = combinedScoresByCreator.ContainsKey("H3H3") ? combinedScoresByCreator["H3H3"].ToString("F") : "0";
+        string pirateSoftwareScore = combinedScoresByCreator.ContainsKey("PirateSoftware") ? combinedScoresByCreator["PirateSoftware"].ToString("F") : "0";
 
         //show scores above heads and sort streamers positions
-        podiumPeopleManager.TakeScoresAndOrganizeStreamersAndScores(destinyScore, xqcScore, hasanScore, amouranthScore, h3h3Score);
+        podiumPeopleManager.TakeScoresAndOrganizeStreamersAndScores(destinyScore, xqcScore, hasanScore, amouranthScore, h3h3Score, pirateSoftwareScore);
     }
 
     private string GetCreatorFromMetadata(string metadata)
