@@ -14,4 +14,5 @@ public class Streamer : ScriptableObject
     public float GambleMultiplier = 1.5f;
     public float FactoryOhMultiplier = .1f;
     public float AnimalWellMultiplier = 1f;
+    public float CallOfBootyMultiplier = 1f;
 }

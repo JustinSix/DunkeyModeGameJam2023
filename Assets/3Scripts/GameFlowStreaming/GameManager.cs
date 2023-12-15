@@ -174,6 +174,13 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
+#if UNITY_EDITOR
+        // Check if the Escape key is pressed
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            EndGame();
+        }
+#endif
     }
 
     public void ChangeToStreaming()

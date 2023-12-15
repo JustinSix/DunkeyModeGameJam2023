@@ -21,7 +21,7 @@ public class AnimalWellManager : MonoBehaviour
             case "Amouranth":
                 amouranthObject.SetActive(true);
                 break;
-            case "EthanH3H3":
+            case "H3H3":
                 ethanObject.SetActive(true);
                 break;
             case "XQC":

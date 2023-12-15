@@ -16,6 +16,7 @@ public static class Loader
         MarioKurt,
         FactoryOH,
         AnimalWell,
+        CallOfBooty,
     }
 
     private static Scene targetSceneIndex;

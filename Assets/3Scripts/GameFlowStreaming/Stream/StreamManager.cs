@@ -31,6 +31,7 @@ public class StreamManager : MonoBehaviour
     [SerializeField] private Streamer xqcSO;
     [SerializeField] private Streamer ethanSO;
     [SerializeField] private Streamer hasanSO;
+    [SerializeField] private Streamer pirateSO;
 
     public string completedActivity;
     public int activityEarnedPoints;
@@ -148,7 +149,7 @@ public class StreamManager : MonoBehaviour
             case "Amouranth":
                 multiplier = GetMultiplierByStreamer(amouranthSO);
                 break;
-            case "EthanH3H3":
+            case "H3H3":
                 multiplier = GetMultiplierByStreamer(ethanSO);
                 break;
             case "XQC":
@@ -159,6 +160,9 @@ public class StreamManager : MonoBehaviour
                 break;
             case "Hasan":
                 multiplier = GetMultiplierByStreamer(hasanSO);
+                break;
+            case "PirateSoftware":
+                multiplier = GetMultiplierByStreamer(pirateSO);
                 break;
         }
 
@@ -189,7 +193,7 @@ public class StreamManager : MonoBehaviour
             case "Amouranth":
                 multiplier = GetMultiplierByStreamer(amouranthSO);
                 break;
-            case "EthanH3H3":
+            case "H3H3":
                 multiplier = GetMultiplierByStreamer(ethanSO);
                 break;
             case "XQC":
@@ -200,6 +204,9 @@ public class StreamManager : MonoBehaviour
                 break;
             case "Hasan":
                 multiplier = GetMultiplierByStreamer(hasanSO);
+                break;
+            case "PirateSoftware":
+                multiplier = GetMultiplierByStreamer(pirateSO);
                 break;
         }
 
@@ -254,6 +261,9 @@ public class StreamManager : MonoBehaviour
                 break;
             case "AnimalWell":
                 multiplier = streamer.AnimalWellMultiplier;
+                break;
+            case "CallOfBooty":
+                multiplier = streamer.CallOfBootyMultiplier;
                 break;
             default:
 

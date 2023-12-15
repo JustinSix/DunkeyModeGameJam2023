@@ -46,6 +46,7 @@ public  class ActivityManager : MonoBehaviour
         Gamble,
         FactoryOH,
         AnimalWell,
+        CallOfBooty,
     }
     public enum Streamer
     {
@@ -220,6 +221,10 @@ public  class ActivityManager : MonoBehaviour
             case "AnimalWell":
                 ActivtyCompleted(1);
                 Loader.Load(Loader.Scene.AnimalWell);
+                break;
+            case "CallOfBooty":
+                ActivtyCompleted(1);
+                Loader.Load(Loader.Scene.CallOfBooty);
                 break;
             default:
 
