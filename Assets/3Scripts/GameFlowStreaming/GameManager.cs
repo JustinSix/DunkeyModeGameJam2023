@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviour
         }
         mainMenuButton.onClick.AddListener(() =>
         {
+            Destroy(LeaderboardManager.Instance.gameObject);
             Loader.Load(Loader.Scene.MainMenu);
         });
         howwemadeitButton.onClick.AddListener(() =>

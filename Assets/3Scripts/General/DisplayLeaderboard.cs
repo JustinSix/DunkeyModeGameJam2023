@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 public class DisplayLeaderboard : MonoBehaviour
 {
     [SerializeField] PodiumPeopleManager podiumPeopleManager;
-
+    
     // Start is called before the first frame update
     void Start()
     {
