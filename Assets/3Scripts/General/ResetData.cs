@@ -6,11 +6,25 @@ public class ResetData : MonoBehaviour
     {
         if(isMainMenu)
         {
-            PlayerPrefs.DeleteAll();
+            PlayerPrefs.DeleteKey("ChosenStreamer");
+            PlayerPrefs.DeleteKey("CurrentViewers");
+            PlayerPrefs.DeleteKey("CurrentFollowers");
+            PlayerPrefs.DeleteKey("CompletedActivity");
+            PlayerPrefs.DeleteKey("CompletedActivityPoints");
+            PlayerPrefs.DeleteKey("ActivtiesCompleted");
+            PlayerPrefs.DeleteKey("ActivityResult");
+
         }
     }
     private void OnApplicationQuit()
     {
-        PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteKey("ChosenStreamer");
+        PlayerPrefs.DeleteKey("CurrentViewers");
+        PlayerPrefs.DeleteKey("CurrentFollowers");
+        PlayerPrefs.DeleteKey("CompletedActivity");
+        PlayerPrefs.DeleteKey("CompletedActivityPoints");
+        PlayerPrefs.DeleteKey("ActivtiesCompleted");
+        PlayerPrefs.DeleteKey("ActivityResult");
+
     }
 }

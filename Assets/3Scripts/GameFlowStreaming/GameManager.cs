@@ -135,7 +135,16 @@ public class GameManager : MonoBehaviour
         }
         mainMenuButton.onClick.AddListener(() =>
         {
-            Destroy(LeaderboardManager.Instance.gameObject);
+            PlayerPrefs.DeleteKey("ChosenStreamer");
+            PlayerPrefs.DeleteKey("CurrentViewers");
+            PlayerPrefs.DeleteKey("CurrentFollowers");
+            PlayerPrefs.DeleteKey("CompletedActivity");
+            PlayerPrefs.DeleteKey("CompletedActivityPoints");
+            PlayerPrefs.DeleteKey("ActivtiesCompleted");
+            PlayerPrefs.DeleteKey("ActivityResult");
+
+            loadedOnce = false;
+
             Loader.Load(Loader.Scene.MainMenu);
         });
         howwemadeitButton.onClick.AddListener(() =>
@@ -221,6 +230,5 @@ public class GameManager : MonoBehaviour
         followersGainedText.text = followersGained.ToString() + " followers gained!";
 
         state = State.GameOver;
-        PlayerPrefs.DeleteAll();
     }
 }

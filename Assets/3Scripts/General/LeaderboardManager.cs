@@ -103,25 +103,7 @@ public class LeaderboardManager : MonoBehaviour
 
         AddScoreWithMetadata(playerScore, creatorName);
     }
-    async Task UpdatePlayerName(string playerName)
-    {
-        try
-        {
-            await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
-        }
-        catch (AuthenticationException ex)
-        {
-            // Compare error code to AuthenticationErrorCodes
-            // Notify the player with the proper error message
-            Debug.LogException(ex);
-        }
-        catch (RequestFailedException ex)
-        {
-            // Compare error code to CommonErrorCodes
-            // Notify the player with the proper error message
-            Debug.LogException(ex);
-        }
-    }
+
     public async void AddScoreWithMetadata(float playerScore, string creatorName)
     {
         var metadata = new Dictionary<string, string>() { { "creator", creatorName } };
