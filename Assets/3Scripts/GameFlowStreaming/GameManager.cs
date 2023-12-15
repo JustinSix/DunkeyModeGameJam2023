@@ -5,6 +5,7 @@ using Cinemachine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.Services.Authentication;
 
 public class GameManager : MonoBehaviour
 {
@@ -201,6 +202,17 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
+        if (AuthenticationService.Instance.IsSignedIn)
+        {
+            // The user is signed in
+            Debug.Log("User is signed in.");
+            Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
+        }
+        else
+        {
+            // The user is not signed in
+            Debug.Log("User is not signed in.");
+        }
         streamEndCanvas.gameObject.SetActive(true);
         int viewersGained = StreamManager.Instance.GetViewers() - 1000;
         viewersGainedText.text = viewersGained.ToString() + " viewers gained!";
